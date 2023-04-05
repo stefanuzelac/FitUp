@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FitUp</string>
+    <string name="nav_header_title">Stefan Uzelac</string>
+    <string name="nav_header_subtitle">stefanuzelac1010@gmail.com</string>
+    <string name="time_picker_formatter">%02d</string>
+
+</resources>

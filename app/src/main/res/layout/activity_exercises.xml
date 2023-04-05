@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:title="@string/app_name">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:columnCount="3"
+                    android:rowCount="3"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <Button
+                        android:id="@+id/biceps_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="1dp"
+                        android:text="BICEPS"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/triceps_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="TRICEPS"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/chest_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="CHEST"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/lats_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="LATS"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/middle_back_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="MIDDLE BACK"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/lower_back_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="LOWER BACK"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/glutes_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="GLUTES"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/hamstrings_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="HAMSTRINGS"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+
+                    <Button
+                        android:id="@+id/quadriceps_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:text="QUADRICEPS"
+                        android:layout_margin="1dp"
+                        android:textSize="13sp"/>
+                </GridLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exercises_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_menu" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+</LinearLayout>
