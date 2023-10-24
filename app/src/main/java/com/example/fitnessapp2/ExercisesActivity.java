@@ -23,18 +23,16 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
     private ExerciseApi exerciseApi;
     private RecyclerView exercisesRecyclerView;
     private ExercisesAdapter exercisesAdapter;
-    private Button bicepsButton, tricepsButton, chestButton, latsButton, middleBackButton, lowerBackButton, glutesButton, hamstringsButton, quadricepsButton;
-
+    private Button bicepsButton, tricepsButton, chestButton, latsButton,
+            middleBackButton, lowerBackButton, glutesButton, hamstringsButton, quadricepsButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
         setupToolbarAndDrawer();
-
         //set up the RecyclerView and adapter
         exercisesRecyclerView = findViewById(R.id.exercises_recycler_view);
-
         //set the layout manager
         exercisesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         exercisesAdapter = new ExercisesAdapter(new ArrayList<>());
@@ -71,7 +69,6 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
         quadricepsButton = findViewById(R.id.quadriceps_button);
         quadricepsButton.setOnClickListener(view -> onQuadricepsButtonClick());
     }
-
     //if api request succeeded
     @Override
     public void onSuccess(List<Exercise> exerciseList) {
@@ -82,50 +79,41 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
             //notify the adapter that the data has changed
             exercisesAdapter.notifyDataSetChanged();
             //print a log message to indicate that the exercises list was updated - debugging purposes
-            Log.d("ExercisesActivity", "Updated exercises list with " + exerciseList.size() + " exercises");
+            Log.d("ExercisesActivity", "Updated exercises list with "
+                    + exerciseList.size()
+                    + " exercises");
         });
     }
-
-
-
     @Override
     public void onError(Exception e) {
-        runOnUiThread(() -> Toast.makeText(this, "Error while getting exercises: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> Toast.makeText(this, "Error while getting exercises: "
+                + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-
     //when the biceps button is clicked make a call to the API to get a list of exercises for biceps, same procedure for other buttons
     public void onBicepsButtonClick() {
         exerciseApi.getExercises("biceps", this);
     }
-
     public void onTricepsButtonClick() {
         exerciseApi.getExercises("triceps", this);
     }
-
     public void onChestButtonClick() {
         exerciseApi.getExercises("chest", this);
     }
-
     public void onLatsButtonClick() {
         exerciseApi.getExercises("lats", this);
     }
-
     public void onMiddleBackButtonClick() {
         exerciseApi.getExercises("middle_back", this);
     }
-
     public void onLowerBackButtonClick() {
         exerciseApi.getExercises("lower_back", this);
     }
-
     public void onGlutesButtonClick() {
         exerciseApi.getExercises("glutes", this);
     }
-
     public void onHamstringsButtonClick() {
         exerciseApi.getExercises("hamstrings", this);
     }
-
     public void onQuadricepsButtonClick() {
         exerciseApi.getExercises("quadriceps", this);
     }

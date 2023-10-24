@@ -6,19 +6,15 @@ public class Exercise {
     public Exercise(String name) {
         this.name = name;
     }
-
     public String getName() {
         return name;
     }
-
     public String getType() {
         return type;
     }
-
     public String getMuscle() {
         return muscle;
     }
-
     public String getEquipment() {
         return equipment;
     }
@@ -26,15 +22,12 @@ public class Exercise {
     public String getDifficulty() {
         return difficulty;
     }
-
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
-
     public String getInstructions() {
         return instructions;
     }
-
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }

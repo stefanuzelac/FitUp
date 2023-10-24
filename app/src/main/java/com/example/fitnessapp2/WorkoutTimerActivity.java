@@ -30,7 +30,6 @@ public class WorkoutTimerActivity extends BaseActivity {
     private CountDownTimer countDownTimer;
     private boolean isTimerRunning = false;
     private NumberPicker hoursPicker, minutesPicker, secondsPicker;
-    private int prevHours, prevMinutes, prevSeconds; //will use in future, should stay
     private long initialTimeInMillis;
 
     @Override
@@ -58,14 +57,6 @@ public class WorkoutTimerActivity extends BaseActivity {
         setPickerFocusability(minutesPicker);
         secondsPicker = findViewById(R.id.secondsPicker);
         setPickerFocusability(secondsPicker);
-
-        // set the previous values of the number pickers to the current values
-        //not using currently
-        /*
-        prevHours = hoursPicker.getValue();
-        prevMinutes = minutesPicker.getValue();
-        prevSeconds = secondsPicker.getValue();
-        */
 
         hoursPicker.setFormatter(new NumberPicker.Formatter() {
             @Override
@@ -112,7 +103,6 @@ public class WorkoutTimerActivity extends BaseActivity {
             }
         });
 
-
         //set onClickListener for startTimerButton
         startTimerButton = findViewById(R.id.startTimerButton);
         startTimerButton.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +113,6 @@ public class WorkoutTimerActivity extends BaseActivity {
                 }
             }
         });
-
 
         //set onClickListener for pauseTimerButton
         pauseTimerButton = findViewById(R.id.pauseTimerButton);
@@ -142,7 +131,6 @@ public class WorkoutTimerActivity extends BaseActivity {
                 resetTimerButtonClicked();
             }
         });
-
     }
 
     //converting my total time to milliseconds
@@ -151,7 +139,9 @@ public class WorkoutTimerActivity extends BaseActivity {
         int minutes = minutesPicker.getValue();
         int seconds = secondsPicker.getValue();
 
-        return TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds);
+        return TimeUnit.HOURS.toMillis(hours)
+                + TimeUnit.MINUTES.toMillis(minutes)
+                + TimeUnit.SECONDS.toMillis(seconds);
     }
 
 
@@ -187,14 +177,6 @@ public class WorkoutTimerActivity extends BaseActivity {
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;
         int seconds = totalSeconds % 60;
-
-        // update the previous values to the current values
-        //not using currently
-        /*
-        prevHours = hours;
-        prevMinutes = minutes;
-        prevSeconds = seconds;
-        */
 
         // set the values for the hours, minutes, and seconds pickers
         hoursPicker.setValue(hours);

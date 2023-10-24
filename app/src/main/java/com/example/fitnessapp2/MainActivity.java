@@ -3,12 +3,18 @@ package com.example.fitnessapp2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+
+import java.util.concurrent.Executor;
 
 public class MainActivity extends BaseActivity {
     EditText loginEmail, loginPassword;
@@ -16,38 +22,56 @@ public class MainActivity extends BaseActivity {
     CheckBox rememberMeCheckbox;
     DatabaseHelper dbHelper;
     SharedPreferences sharedPref;
+    BiometricManager biometricManager;
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
+    Integer loggedInUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //set instance of dbHelper class
+        //initialize BiometricManager
+        biometricManager = BiometricManager.from(this);
+
         dbHelper = new DatabaseHelper(MainActivity.this);
 
-        //initialize UI elements
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         loginButton = findViewById(R.id.loginButton);
         signUpButton = findViewById(R.id.signUpButton);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
 
-        //get SharedPreferences object for the app
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //initialize email and password variables
         String email = "";
         String password = "";
 
-        //check if the rememberMe flag is set for the user
-        boolean rememberMe = sharedPref.getBoolean("rememberMe", false);
-        if (rememberMe) {
+        sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
+
+        boolean rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+        rememberMeCheckbox.setChecked(rememberMeCheckboxState);
+
+        if (rememberMeCheckboxState) {
             email = sharedPref.getString("email", "");
             password = sharedPref.getString("password", "");
+            loggedInUserId = sharedPref.getInt("loggedInUserId", -1);
 
             //set the checkbox to checked if the user has previously checked it
             rememberMeCheckbox.setChecked(true);
         }
+
+        rememberMeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("rememberMeCheckboxState", isChecked);
+            if (!isChecked) {
+
+                editor.remove("email");
+                editor.remove("password");
+                editor.remove("loggedInUserId");
+                editor.putBoolean("rememberMeCheckboxState", false);
+            }
+            editor.apply();
+        });
 
         //set the email and password fields to the values stored in SharedPreferences
         loginEmail.setText(email);
@@ -57,7 +81,6 @@ public class MainActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //get the entered email and password
                 String enteredEmail = loginEmail.getText().toString().trim();
                 String enteredPassword = loginPassword.getText().toString().trim();
@@ -74,31 +97,25 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(MainActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // Get the user's ID
+                //get the user's ID
                 loggedInUserId = user.getId();
 
-                //store email and password in SharedPreferences
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("email", enteredEmail);
-                editor.putString("password", enteredPassword);
-
-                //store rememberMe state in SharedPreferences
-                editor.putBoolean("rememberMe", rememberMeCheckbox.isChecked());
-
-                //save changes to editor asynchronously
-                editor.apply();
+                //store email, password, and loggedInUserId in SharedPreferences only if rememberMeCheckbox is checked
+                if (rememberMeCheckbox.isChecked()) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("email", enteredEmail);
+                    editor.putInt("loggedInUserId", loggedInUserId);
+                    editor.apply();
+                }
 
                 //start the app main page activity and close the current activity
                 Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
                 intent.putExtra("loggedInUserId", loggedInUserId); //passing the user ID to the next activity
                 startActivity(intent);
                 finish();
-
-
             }
         });
 
-        //set up a listener for the sign up button
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +123,57 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (loggedInUserId != null && loggedInUserId != -1) {
+            //retrieve the correct shared preferences file
+            sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
+            boolean rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+
+            if (rememberMeCheckboxState) {
+                //check if biometric login is enabled
+                sharedPref = getSharedPreferences("biometric_pref_" + loggedInUserId, MODE_PRIVATE);
+                boolean biometricLoginEnabled = sharedPref.getBoolean("biometric_login_enabled", false);
+
+                if (biometricLoginEnabled && biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS) {
+                    Executor executor = ContextCompat.getMainExecutor(this);
+                    biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                        @Override
+                        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                            super.onAuthenticationError(errorCode, errString);
+                            Toast.makeText(MainActivity.this, "Biometric authentication canceled", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                            super.onAuthenticationSucceeded(result);
+                            Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
+                            intent.putExtra("loggedInUserId", loggedInUserId);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            super.onAuthenticationFailed();
+                            Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                            .setTitle("FitUp Fingerprint Recognition")
+                            .setSubtitle("Log in using your fingerprint credential.")
+                            .setNegativeButtonText("Cancel")
+                            .build();
+
+                    biometricPrompt.authenticate(promptInfo);
+                }
+            }
+            rememberMeCheckbox.setChecked(rememberMeCheckboxState);
+        }
+    }
 }

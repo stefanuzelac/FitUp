@@ -18,4 +18,9 @@
         android:icon="@drawable/ic_nutrition"
         android:title="Macro Tracker" />
 
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+
 </menu>

@@ -21,20 +21,12 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class RegistrationActivity extends AppCompatActivity {
-
-    //declare UI elements
     private EditText registerName, registerLastName, registerEmail, registerPassword, registerPhone;
     private Button registerDOB, registerConfirm;
-
-    //declare variables for date of birth functionality
     private Calendar dobCalendar;
     private SimpleDateFormat dateFormatter;
-    private String dateOfBirth; // string for date of birth for database
-
-    //declare a database helper
+    private String dateOfBirth;
     private DatabaseHelper myDb;
-
-    //declare variables for user registration data
     String name, lastName, email, password, phone, dob;
 
     @Override
@@ -42,7 +34,6 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        //initialize UI elements
         registerName = findViewById(R.id.registerName);
         registerLastName = findViewById(R.id.registerLastName);
         registerEmail = findViewById(R.id.registerEmail);
@@ -51,15 +42,14 @@ public class RegistrationActivity extends AppCompatActivity {
         registerDOB = findViewById(R.id.registerDOB);
         registerConfirm = findViewById(R.id.registerConfirm);
 
-        //initialize date of birth variables and set default date to today
         dobCalendar = Calendar.getInstance();
-        registerDOB.setText(dobCalendar.get(Calendar.DATE) + "/" + (dobCalendar.get(Calendar.MONTH) + 1) + "/" + dobCalendar.get(Calendar.YEAR));
+        registerDOB.setText(dobCalendar.get(Calendar.DATE)
+                + "/" + (dobCalendar.get(Calendar.MONTH) + 1)
+                + "/" + dobCalendar.get(Calendar.YEAR));
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
-        //initialize database helper
         myDb = new DatabaseHelper(this);
 
-        //add functionality to select date of birth
         registerDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +81,6 @@ public class RegistrationActivity extends AppCompatActivity {
         registerConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Retrieve user data from UI elements
                 name = registerName.getText().toString().trim();
                 lastName = registerLastName.getText().toString().trim();
                 email = registerEmail.getText().toString().trim();
@@ -99,19 +88,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 phone = registerPhone.getText().toString().trim();
                 dob = registerDOB.getText().toString().trim();
 
-                //here I verify all user input step by step
-                //will repeat for each field, same process more or less
-
-                //check if the name field is empty
                 if (name.isEmpty()) {
                     //set error message for the name field
                     registerName.setError("Name is required");
-                    //request focus on the name field so user can fix the error
                     registerName.requestFocus();
-                    //return to stop the function from proceeding further
                     return;
                 }
-
 
                 if (lastName.isEmpty()) {
                     registerLastName.setError("Last name is required");
@@ -203,8 +185,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             if (indexDOB != -1) {
                                 insertedDOB = cursor.getString(indexDOB);
                             }
-                            //Check the inserted data
-                            Log.d("Inserted data", "Name: " + insertedName + ", Last Name: " + insertedLastName + ", Email: " + insertedEmail + ", Password: " + insertedPassword + ", Phone: " + insertedPhone + ", DOB: " + insertedDOB);
                         } while (cursor.moveToNext());
                     }
                     cursor.close();
@@ -217,14 +197,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
-    //inserts new user registration data into database
     public long addData(String name, String lastName, String email, String password, String phone, String dob) {
         return myDb.insertData(name, lastName, email, password, phone, dob );
     }
-
-
 }

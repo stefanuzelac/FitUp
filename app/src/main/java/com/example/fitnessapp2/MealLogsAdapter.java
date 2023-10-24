@@ -105,7 +105,6 @@ public class MealLogsAdapter extends RecyclerView.Adapter<MealLogsAdapter.MealLo
         return mealCursor;
     }
 
-
     //interface for making items clickable
     public interface OnItemClickListener {
         void onItemClick(int position);

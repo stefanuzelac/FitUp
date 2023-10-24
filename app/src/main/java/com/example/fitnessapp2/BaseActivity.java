@@ -21,6 +21,7 @@ public class BaseActivity extends AppCompatActivity {
     protected DrawerLayout drawer;
     protected NavigationView navigationView;
     protected int loggedInUserId = -1;
+    private SharedPreferences sharedPref;
 
     //set logged in user
     public void setLoggedInUserId(int userId) {
@@ -28,11 +29,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setupToolbarAndDrawer() {
-        //find the toolbar and drawer layout in the activity layout file
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 
-        //set the toolbar as the actionbar
+        sharedPref = getSharedPreferences("app_pref", MODE_PRIVATE);
+        loggedInUserId = sharedPref.getInt("loggedInUserId", -1);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -52,7 +54,6 @@ public class BaseActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Switch case to handle different menu items
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         Intent intent = new Intent(BaseActivity.this, AppMainPageActivity.class);
@@ -64,7 +65,8 @@ public class BaseActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_progress_tracker:
                         if (loggedInUserId == -1) {
-                            Toast.makeText(BaseActivity.this, "User ID not found. Please log in again.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseActivity.this, "User ID not found. Please log in again.",
+                                    Toast.LENGTH_SHORT).show();
                             return true;
                         }
                         Intent intent3 = new Intent(BaseActivity.this, ProgressTrackerActivity.class);
@@ -72,9 +74,19 @@ public class BaseActivity extends AppCompatActivity {
                         startActivity(intent3);
                         break;
                     case R.id.nav_macro_tracker:
+                        if (loggedInUserId == -1) {
+                            Toast.makeText(BaseActivity.this, "User ID not found. Please log in again.",
+                                    Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
                         Intent intent4 = new Intent(BaseActivity.this, MacroTrackerActivity.class);
                         intent4.putExtra("loggedInUserId", loggedInUserId);
                         startActivity(intent4);
+                        break;
+                    case R.id.nav_settings:
+                        Intent intent5 = new Intent(BaseActivity.this, SettingsActivity.class);
+                        intent5.putExtra("loggedInUserId", loggedInUserId);
+                        startActivity(intent5);
                         break;
                 }
                 return true;
@@ -87,8 +99,8 @@ public class BaseActivity extends AppCompatActivity {
         TextView nameTextView = headerView.findViewById(R.id.nav_header_name);
         TextView emailTextView = headerView.findViewById(R.id.nav_header_email);
 
-        //getting the email from SharedPreferences
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        // getting the email from SharedPreferences
+        sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
         String email = sharedPref.getString("email", "");
 
         //getting the user data from the database

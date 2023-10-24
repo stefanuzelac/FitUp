@@ -1,19 +1,9 @@
 package com.example.fitnessapp2;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +25,7 @@ public class AccountActivity extends BaseActivity {
     private EditText profileHeightInput, profileWeightInput;
     private Button saveButton;
     private User user;
-
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +44,8 @@ public class AccountActivity extends BaseActivity {
         textViewAge = findViewById(R.id.profileAgeDisplay);
         saveButton = findViewById(R.id.saveButton);
 
-
         // get the email and password of the currently logged in user from SharedPreferences
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String email = sharedPref.getString("email", "");
         String password = sharedPref.getString("password", "");
 
@@ -117,7 +104,6 @@ public class AccountActivity extends BaseActivity {
             }
         }
 
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,24 +123,19 @@ public class AccountActivity extends BaseActivity {
             gender = selectedRadioButton.getText().toString();
         }
 
-        //gt the entered height and weight
         int height = 0;
         int weight = 0;
-
         if (!profileHeightInput.getText().toString().isEmpty()) {
             height = Integer.parseInt(profileHeightInput.getText().toString());
         }
-
         if (!profileWeightInput.getText().toString().isEmpty()) {
             weight = Integer.parseInt(profileWeightInput.getText().toString());
         }
 
-        //update the user object
         user.setGender(gender);
         user.setHeight(height);
         user.setWeight(weight);
 
-        //update the user in the database
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         boolean success = databaseHelper.updateUserProfile(user, gender, height, weight, null);
 
