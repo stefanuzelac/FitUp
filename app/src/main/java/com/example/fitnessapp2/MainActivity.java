@@ -22,10 +22,8 @@ public class MainActivity extends BaseActivity {
     CheckBox rememberMeCheckbox;
     DatabaseHelper dbHelper;
     SharedPreferences sharedPref;
-    BiometricManager biometricManager;
-    BiometricPrompt biometricPrompt;
-    BiometricPrompt.PromptInfo promptInfo;
     Integer loggedInUserId;
+    boolean rememberMeCheckboxState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         //initialize BiometricManager
-        biometricManager = BiometricManager.from(this);
+        //biometricManager = BiometricManager.from(this);
 
         dbHelper = new DatabaseHelper(MainActivity.this);
 
@@ -48,7 +46,7 @@ public class MainActivity extends BaseActivity {
 
         sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
 
-        boolean rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+        rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
         rememberMeCheckbox.setChecked(rememberMeCheckboxState);
 
         if (rememberMeCheckboxState) {
@@ -132,48 +130,9 @@ public class MainActivity extends BaseActivity {
         if (loggedInUserId != null && loggedInUserId != -1) {
             //retrieve the correct shared preferences file
             sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
-            boolean rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+            rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
 
-            if (rememberMeCheckboxState) {
-                //check if biometric login is enabled
-                sharedPref = getSharedPreferences("biometric_pref_" + loggedInUserId, MODE_PRIVATE);
-                boolean biometricLoginEnabled = sharedPref.getBoolean("biometric_login_enabled", false);
-
-                if (biometricLoginEnabled && biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS) {
-                    Executor executor = ContextCompat.getMainExecutor(this);
-                    biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-                        @Override
-                        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                            super.onAuthenticationError(errorCode, errString);
-                            Toast.makeText(MainActivity.this, "Biometric authentication canceled", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                            super.onAuthenticationSucceeded(result);
-                            Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
-                            intent.putExtra("loggedInUserId", loggedInUserId);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void onAuthenticationFailed() {
-                            super.onAuthenticationFailed();
-                            Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("FitUp Fingerprint Recognition")
-                            .setSubtitle("Log in using your fingerprint credential.")
-                            .setNegativeButtonText("Cancel")
-                            .build();
-
-                    biometricPrompt.authenticate(promptInfo);
-                }
-            }
-            rememberMeCheckbox.setChecked(rememberMeCheckboxState);
         }
+        rememberMeCheckbox.setChecked(rememberMeCheckboxState);
     }
 }
