@@ -30,9 +30,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialize BiometricManager
-        //biometricManager = BiometricManager.from(this);
-
         dbHelper = new DatabaseHelper(MainActivity.this);
 
         loginEmail = findViewById(R.id.loginEmail);
@@ -89,28 +86,28 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
 
-                //check if the email and password combination exists in the database
-                User user = dbHelper.getUser(enteredEmail.trim(), enteredPassword.trim());
-                if (user == null) {
-                    Toast.makeText(MainActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //get the user's ID
-                loggedInUserId = user.getId();
-
-                //store email, password, and loggedInUserId in SharedPreferences only if rememberMeCheckbox is checked
-                if (rememberMeCheckbox.isChecked()) {
+                // Check if the email and password combination exists in the database
+                User user = dbHelper.getUser(enteredEmail, enteredPassword);
+                if (user != null) {
+                    // Login successful
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("email", enteredEmail);
-                    editor.putInt("loggedInUserId", loggedInUserId);
+                    editor.putString("password", enteredPassword); // SECURITY NOTE: Consider not storing plain-text passwords.
+                    editor.putInt("loggedInUserId", user.getId());
+                    editor.putString("fullName", user.getName() + " " + user.getLastName());
                     editor.apply();
-                }
 
-                //start the app main page activity and close the current activity
-                Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
-                intent.putExtra("loggedInUserId", loggedInUserId); //passing the user ID to the next activity
-                startActivity(intent);
-                finish();
+                    // Set the current user in UserSessionManager
+                    UserSessionManager.getInstance().setCurrentUser(user);
+
+                    // Proceed to the main app screen, as login was successful
+                    Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
+                    intent.putExtra("loggedInUserId", user.getId()); //passing the user ID to the next activity, use user.getId() to get the correct ID.
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // ... (handle failed login)
+                }
             }
         });
 
@@ -124,15 +121,31 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void checkSession() {
+        // MainActivity's specific logic, or even an empty method, if no checking is required
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        if (loggedInUserId != null && loggedInUserId != -1) {
-            //retrieve the correct shared preferences file
-            sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
-            rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+        // No need to call checkSession() here if MainActivity doesn't require session validation
+        // upon every resume. The session check upon startup can be handled in onCreate() or onStart().
 
-        }
+        // The rest of onResume can handle activity-specific tasks.
         rememberMeCheckbox.setChecked(rememberMeCheckboxState);
+
+        // Any other UI updates or operations necessary for MainActivity.
+    }
+
+    @Override
+    protected void setupToolbarAndDrawer() {
+        // Do not call super, and leave this method empty if you do not want
+        // to set up the toolbar and drawer in this activity.
+    }
+
+    @Override
+    protected void updateNavigationHeaderWithUserData() {
+        // Empty since there's no NavigationView in this activity.
     }
 }

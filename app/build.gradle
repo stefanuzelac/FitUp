@@ -28,7 +28,8 @@ android {
 }
 
 dependencies {
-    implementation "com.androidplot:androidplot-core:1.5.10"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.androidplot:androidplot-core:1.5.10'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

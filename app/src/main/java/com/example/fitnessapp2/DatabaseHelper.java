@@ -154,7 +154,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 //create a new UserProfile object with the retrieved values
                 user = new User(id, name, lastName, emailFromDB, passwordFromDB, phone, dob, gender, height, weight, profilePicture);
+                Log.d("DBHelper", "User found: " + user.toString()); // Ensure your User class has a proper toString method.
             }
+
+        } else {
+            Log.d("DBHelper", "No user found with the provided credentials.");
         }
 
         //close cursor and the database connection

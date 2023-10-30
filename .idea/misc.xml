@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/border.xml" value="0.2345" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_account.xml" value="0.2435" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_exercise.xml" value="0.2435" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_meals.xml" value="0.2435" />
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/transparent_divider.xml" value="0.1" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font-v26/montserrat_font_family.xml" value="0.284375" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font/font_family.xml" value="0.2125" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font/montserrat_font_family.xml" value="0.21328125" />

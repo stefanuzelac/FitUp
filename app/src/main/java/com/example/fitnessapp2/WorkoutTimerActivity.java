@@ -1,14 +1,22 @@
 package com.example.fitnessapp2;
 
+import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,11 +25,13 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +41,9 @@ public class WorkoutTimerActivity extends BaseActivity {
     private boolean isTimerRunning = false;
     private NumberPicker hoursPicker, minutesPicker, secondsPicker;
     private long initialTimeInMillis;
+    private long timeRemaining = 0; // New variable
+    private int defaultBorderColor;
+    private boolean wasTimerReset = false; // New variable to track if the timer was reset
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +144,9 @@ public class WorkoutTimerActivity extends BaseActivity {
                 resetTimerButtonClicked();
             }
         });
+
+        // Fetch the color from the resources
+        defaultBorderColor = getResources().getColor(R.color.colorAccent);
     }
 
     //converting my total time to milliseconds
@@ -144,32 +160,109 @@ public class WorkoutTimerActivity extends BaseActivity {
                 + TimeUnit.SECONDS.toMillis(seconds);
     }
 
+    private void updateControlsState(boolean enable) {
+        // Enable or disable controls
+        hoursPicker.setEnabled(enable);
+        minutesPicker.setEnabled(enable);
+        secondsPicker.setEnabled(enable);
+        // Might also want to change the appearance (e.g., opacity) of the pickers here
+    }
 
     private void startTimerButtonClicked() {
+        // if the timer is running or it's paused (timeRemaining > 0), we just resume it without animation
+        if (isTimerRunning || timeRemaining > 0) {
+            resumeTimer();
+            return;
+        }
+
+        // Find the timePickerLayout and load the scale animation.
+        LinearLayout timePickerLayout = findViewById(R.id.timePickerLayout);
+        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale);
+
+        // Set an animation listener to react when the animation ends
+        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Here, you might want to perform an action at the start of the animation
+                // (e.g., change the appearance of a widget)
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Start the countdown only after the scale-up animation completes
+                resumeTimer();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // This won't be called as we're not repeating the animation
+            }
+        });
+
+        // Disabling NumberPickers again during animation
+        updateControlsState(false);
+
+        // Start the animation
+        timePickerLayout.startAnimation(scaleAnimation);
+
+        // Reset the wasTimerReset flag when the timer starts again
+        wasTimerReset = false;
+    }
+
+    private void resumeTimer() {
         if (!isTimerRunning) {
+            updateControlsState(false);
             isTimerRunning = true;
-            final long startTimeInMillis = calculateTimeInMillis();
-            initialTimeInMillis = startTimeInMillis;
+
+            long startTimeInMillis = (timeRemaining > 0) ? timeRemaining : calculateTimeInMillis();
+            initialTimeInMillis = (initialTimeInMillis > 0) ? initialTimeInMillis : startTimeInMillis;
             long interval = 1000; // 1 second in milliseconds
 
+            // Create the countdown timer and handle its events.
             countDownTimer = new CountDownTimer(startTimeInMillis, interval) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    //update timerDisplay with the remaining time
+                    timeRemaining = millisUntilFinished; // Update the time remaining on every tick
                     updateTimerDisplay(millisUntilFinished);
+
+                    // Existing color transition and border color update code...
                 }
 
                 @Override
                 public void onFinish() {
-                    //timer has finished, update timerDisplay
+                    // Timer has finished; reset state and update display.
                     isTimerRunning = false;
+                    timeRemaining = 0; // Reset the time remaining
                     updateTimerDisplay(0);
+
+                    // Starting scale-down animation
+                    LinearLayout timePickerLayout = findViewById(R.id.timePickerLayout);
+                    Animation scaleDownAnimation = AnimationUtils.loadAnimation(WorkoutTimerActivity.this, R.anim.scale_down);
+
+                    // Setting listener to re-enable interaction with the timer once the animation ends
+                    scaleDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            updateControlsState(true);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    // Start the scale-down animation
+                    timePickerLayout.startAnimation(scaleDownAnimation);
                 }
             }.start();
         }
-
     }
-
 
     private void updateTimerDisplay(long millisUntilFinished) {
         // Format remaining time in hh:mm:ss format
@@ -186,24 +279,71 @@ public class WorkoutTimerActivity extends BaseActivity {
 
     private void pauseTimerButtonClicked() {
         if (isTimerRunning) {
-            countDownTimer.cancel();
-            isTimerRunning = false;
+            countDownTimer.cancel(); // Stops the countdown
+            isTimerRunning = false; // Mark the timer as not running
         }
-
     }
 
     private void resetTimerButtonClicked() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
-            // Reset the number pickers to the initial values set by the user
-            hoursPicker.setValue((int) TimeUnit.MILLISECONDS.toHours(initialTimeInMillis));
-            minutesPicker.setValue((int) (TimeUnit.MILLISECONDS.toMinutes(initialTimeInMillis) % 60));
-            secondsPicker.setValue((int) (TimeUnit.MILLISECONDS.toSeconds(initialTimeInMillis) % 60));
-            // Update the timer display with the initial values
-            updateTimerDisplay(initialTimeInMillis);
             isTimerRunning = false;
+            timeRemaining = 0;
+
+            // Only start the scale-down animation if the timer was previously running
+            if (initialTimeInMillis > 0 && !wasTimerReset) {
+                final LinearLayout timePickerLayout = findViewById(R.id.timePickerLayout);
+                Animation scaleDownAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+
+                scaleDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Reset timer value and UI elements here, after scale-down animation is completed
+                        hoursPicker.setValue((int) TimeUnit.MILLISECONDS.toHours(initialTimeInMillis));
+                        minutesPicker.setValue((int) (TimeUnit.MILLISECONDS.toMinutes(initialTimeInMillis) % 60));
+                        secondsPicker.setValue((int) (TimeUnit.MILLISECONDS.toSeconds(initialTimeInMillis) % 60));
+                        updateTimerDisplay(initialTimeInMillis);
+
+                        timePickerLayout.setScaleX(1.0f); // Reset X Scale
+                        timePickerLayout.setScaleY(1.0f); // Reset Y Scale
+
+                        GradientDrawable background = (GradientDrawable) timePickerLayout.getBackground();
+                        int borderWidthPx = (int) TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP,
+                                2,
+                                getResources().getDisplayMetrics()
+                        );
+                        background.setStroke(borderWidthPx, defaultBorderColor);
+
+                        timePickerLayout.invalidate();
+                        updateControlsState(true); // Re-enable controls after the reset
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                //Start the scale-down animation
+                timePickerLayout.startAnimation(scaleDownAnimation);
+                wasTimerReset = true;
+            } else {
+                // If timer was not running, just reset the values without any animation.
+                hoursPicker.setValue((int) TimeUnit.MILLISECONDS.toHours(initialTimeInMillis));
+                minutesPicker.setValue((int) (TimeUnit.MILLISECONDS.toMinutes(initialTimeInMillis) % 60));
+                secondsPicker.setValue((int) (TimeUnit.MILLISECONDS.toSeconds(initialTimeInMillis) % 60));
+                updateTimerDisplay(initialTimeInMillis);
+                updateControlsState(true);
+            }
         }
     }
+
 
     private void setPickerFocusability(NumberPicker picker) {
         picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);

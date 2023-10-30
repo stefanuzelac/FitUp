@@ -3,6 +3,7 @@ package com.example.fitnessapp2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     protected NavigationView navigationView;
     protected int loggedInUserId = -1;
     private SharedPreferences sharedPref;
+    protected User currentUser;
 
     //set logged in user
     public void setLoggedInUserId(int userId) {
@@ -92,36 +94,51 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    protected void checkSession() {
+        //checks if the user's session is still valid
+        currentUser = UserSessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            // If the session is no longer valid (e.g., the currentUser is null)
+            // this means the user is not logged in (or the login has expired),
+            // and you want to redirect them to the LoginActivity.
+
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clearing the task stack, so user cannot go back
+            startActivity(intent);
+            finish(); // Prevent the user from coming back to this activity
+        }
+        // If the user is still logged in, nothing needs to be done,
+        // and the activity lifecycle continues as normal.
+    }
+
+    // This method is new. It will be called when the activity starts interacting with the user.
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkSession();
+
+        updateNavigationHeaderWithUserData();
+
+    }
 
 
-        //getting header view and the TextViews to set the name and email
+    // updates the UI elements in the Navigation Drawer header.
+    protected void updateNavigationHeaderWithUserData() {
         View headerView = navigationView.getHeaderView(0);
         TextView nameTextView = headerView.findViewById(R.id.nav_header_name);
         TextView emailTextView = headerView.findViewById(R.id.nav_header_email);
 
-        // getting the email from SharedPreferences
-        sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
-        String email = sharedPref.getString("email", "");
-
-        //getting the user data from the database
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        String password = sharedPref.getString("password", "");
-        User user = databaseHelper.getUser(email, password);
-
-        //setting name and email in the TextViews
-        if (user != null) {
-            String name = user.getName();
-            String lastName = user.getLastName();
-            String fullName = name + " " + lastName;
-            String userEmail = user.getEmail();
-            nameTextView.setText(fullName);
-            emailTextView.setText(userEmail);
-
-            //setting loggedInUserId with the user's ID
-            loggedInUserId = user.getId();
+        if (currentUser != null) {
+            // We have a valid user, so update the name and email in the Navigation Drawer
+            nameTextView.setText(currentUser.getName()); // Assuming 'getName' is a method from your 'User' model
+            emailTextView.setText(currentUser.getEmail()); // Same assumption as above
+        } else {
+            // No user is logged in, so show a generic message
+            nameTextView.setText("Guest");
+            emailTextView.setText("Please sign in");
         }
-
-
     }
 
     //override the onBackPressed method to handle when the back button is pressed

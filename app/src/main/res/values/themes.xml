@@ -29,6 +29,13 @@
 
     </style>
 
+    <style name="CustomNumberPickerStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <!-- Add other styling attributes you want to standardize -->
+    </style>
+
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
     </style>
