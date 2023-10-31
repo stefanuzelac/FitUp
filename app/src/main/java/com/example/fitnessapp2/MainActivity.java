@@ -122,30 +122,20 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void checkSession() {
-        // MainActivity's specific logic, or even an empty method, if no checking is required
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // No need to call checkSession() here if MainActivity doesn't require session validation
-        // upon every resume. The session check upon startup can be handled in onCreate() or onStart().
-
         // The rest of onResume can handle activity-specific tasks.
         rememberMeCheckbox.setChecked(rememberMeCheckboxState);
-
-        // Any other UI updates or operations necessary for MainActivity.
     }
 
     @Override
     protected void setupToolbarAndDrawer() {
-        // Do not call super, and leave this method empty if you do not want
-        // to set up the toolbar and drawer in this activity.
     }
 
     @Override
     protected void updateNavigationHeaderWithUserData() {
-        // Empty since there's no NavigationView in this activity.
     }
 }

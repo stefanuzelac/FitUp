@@ -6,26 +6,12 @@
     android:gravity="center"
     android:orientation="vertical">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:title="@string/app_name">
-
-
-    </androidx.appcompat.widget.Toolbar>
+    <include layout="@layout/toolbar_with_borders"/>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/content_frame"
@@ -37,32 +23,36 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/workout_timer_button"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:onClick="onExercisesButtonClick"
                     android:text="Workout Timer"
-                    android:textSize="20dp" />
+                    android:textColor="@color/on_primary"
+                    android:textSize="20dp"
 
-                <Button
+                    app:backgroundTint="@color/primary" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/exercises_button"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:onClick="onExercisesButtonClick"
                     android:text="Exercises"
-                    android:textSize="20dp" />
+                    android:textColor="@color/on_primary"
+                    android:textSize="20dp"
+                    app:backgroundTint="@color/primary" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/nutrition_button"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:onClick="onNutritionButtonClick"
                     android:text="Nutrition Values"
-                    android:textSize="20dp" />
+                    android:textColor="@color/on_primary"
+                    android:textSize="20dp"
+                    app:backgroundTint="@color/primary" />
             </LinearLayout>
         </FrameLayout>
 
@@ -74,11 +64,6 @@
             app:headerLayout="@layout/nav_header"
             app:menu="@menu/drawer_menu" />
 
-
-        <!-- The LinearLayout and FrameLayout underneath can potentially be deleted, have to check again later -->
-
     </androidx.drawerlayout.widget.DrawerLayout>
 
-
 </LinearLayout>
-

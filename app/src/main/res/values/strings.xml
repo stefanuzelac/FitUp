@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">FitUp</string>
-    <string name="nav_header_title">Stefan Uzelac</string>
-    <string name="nav_header_subtitle">stefanuzelac1010@gmail.com</string>
+    <string name="nav_header_title"></string>
+    <string name="nav_header_subtitle"></string>
     <string name="time_picker_formatter">%02d</string>
+    <string name="biceps">Biceps</string>
+    <string name="triceps">Triceps</string>
+    <string name="chest">Chest</string>
+    <string name="lats">Lats</string>
+    <string name="middle_back">Middle Back</string>
+    <string name="lower_back">Lower Back</string>
+    <string name="glutes">Glutes</string>
+    <string name="hamstrings">Hamstrings</string>
+    <string name="quadriceps">Quadriceps</string>
 
 </resources>

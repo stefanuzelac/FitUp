@@ -32,6 +32,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setupToolbarAndDrawer() {
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.primary));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.on_primary));
         drawer = findViewById(R.id.drawer_layout);
 
         sharedPref = getSharedPreferences("app_pref", MODE_PRIVATE);
@@ -90,6 +92,10 @@ public class BaseActivity extends AppCompatActivity {
                         intent5.putExtra("loggedInUserId", loggedInUserId);
                         startActivity(intent5);
                         break;
+                    case R.id.nav_logout:
+                        logout();
+                        break;
+
                 }
                 return true;
             }
@@ -97,20 +103,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void checkSession() {
-        //checks if the user's session is still valid
         currentUser = UserSessionManager.getInstance().getCurrentUser();
         if (currentUser == null) {
-            // If the session is no longer valid (e.g., the currentUser is null)
-            // this means the user is not logged in (or the login has expired),
-            // and you want to redirect them to the LoginActivity.
-
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clearing the task stack, so user cannot go back
-            startActivity(intent);
-            finish(); // Prevent the user from coming back to this activity
+            logout();
         }
-        // If the user is still logged in, nothing needs to be done,
-        // and the activity lifecycle continues as normal.
     }
 
     // This method is new. It will be called when the activity starts interacting with the user.
@@ -122,7 +118,6 @@ public class BaseActivity extends AppCompatActivity {
         updateNavigationHeaderWithUserData();
 
     }
-
 
     // updates the UI elements in the Navigation Drawer header.
     protected void updateNavigationHeaderWithUserData() {
@@ -162,5 +157,24 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private void logout() {
+        // Clear the current user in UserSessionManager
+        UserSessionManager.getInstance().setCurrentUser(null);
+
+        // Clear shared preferences if needed
+        SharedPreferences sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("email");
+        editor.remove("password");
+        editor.remove("loggedInUserId");
+        editor.putBoolean("rememberMeCheckboxState", false);
+        editor.apply();
+
+        // Navigate to MainActivity (Login screen)
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Close the current activity
+    }
 
 }

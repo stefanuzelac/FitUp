@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.button.MaterialButton;
+
 public class AppMainPageActivity extends BaseActivity {
     //declaring my buttons
-    private Button workoutTimerButton, exercisesButton, nutritionButton;
+    private MaterialButton workoutTimerButton, exercisesButton, nutritionButton;
     int loggedInUserId;
 
     @Override
@@ -16,9 +18,15 @@ public class AppMainPageActivity extends BaseActivity {
         setContentView(R.layout.activity_app_main_page);
         setupToolbarAndDrawer();
 
-        //retrieve the loggedInUserId from the Intent extras and pass it to the BaseActivity
-        loggedInUserId = getIntent().getIntExtra("loggedInUserId", -1);
-        setLoggedInUserId(loggedInUserId); // Call the new method to set loggedInUserId in BaseActivity
+        // Get the currentUser from UserSessionManager
+        User currentUser = UserSessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            // Handle this case, maybe finish the activity or redirect to login
+            finish();
+            return;
+        }
+        loggedInUserId = currentUser.getId(); // Assuming you have a getId method in the User model
+        setLoggedInUserId(loggedInUserId);
 
         //find the workout timer button in the layout file and add a listener to open the workout timer activity
         workoutTimerButton = findViewById(R.id.workout_timer_button);
@@ -46,6 +54,7 @@ public class AppMainPageActivity extends BaseActivity {
         });
 
     }
+
     public void onWorkoutTimerButtonClick(View view) {
         Intent intent = new Intent(AppMainPageActivity.this, WorkoutTimerActivity.class);
         startActivity(intent);

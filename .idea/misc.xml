@@ -7,7 +7,10 @@
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_account.xml" value="0.2435" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_exercise.xml" value="0.2435" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/ic_meals.xml" value="0.2435" />
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/toolbar_border.xml" value="0.214" />
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/toolbar_with_border.xml" value="0.214" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/transparent_divider.xml" value="0.1" />
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/drawable/workout_log_item_background.xml" value="0.2595" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font-v26/montserrat_font_family.xml" value="0.284375" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font/font_family.xml" value="0.2125" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/font/montserrat_font_family.xml" value="0.21328125" />
@@ -31,6 +34,7 @@
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/layout/macro_log_item.xml" value="0.18984375" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/layout/meal_log_item.xml" value="0.190625" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/layout/nav_header.xml" value="0.190625" />
+        <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/layout/toolbar_with_borders.xml" value="0.18984375" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/layout/workout_log_item.xml" value="0.18984375" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/menu/drawer_menu.xml" value="0.190625" />
         <entry key="..\:/Program Files/Fakultet/FitnessApp2/app/src/main/res/menu/main_menu.xml" value="0.190625" />

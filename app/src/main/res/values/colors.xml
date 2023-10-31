@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#2F43AF</color>
-    <color name="colorPrimaryDark">#4CAF50</color>
-    <color name="colorSecondary">#419295</color>
-    <color name="colorSecondaryDark">#00D4A3</color>
-    <color name="colorAccent">#2196F3</color>
-    <color name="background">#FFFFFF</color>
+    <!-- Light Theme Colors -->
+    <color name="primary">#2f3f4f</color> <!-- Base Greyish-Blue Color -->
+    <color name="primary_variant">#2a3a4a</color> <!-- Slightly Desaturated Greyish-Blue -->
+    <color name="secondary">#212e3c</color> <!-- Darkened and Desaturated Greyish-Blue -->
+    <color name="secondary_variant">#151f29</color> <!-- Darkest Desaturated Greyish-Blue Shade -->
+    <color name="background">#F9F9F9</color> <!-- Off-White -->
+    <color name="on_primary">#FFFFFF</color> <!-- White Text/Icons on Primary -->
+    <color name="on_secondary">#FFFFFF</color> <!-- White Text/Icons on Secondary -->
 
+    <!-- Dark Theme Colors -->
+    <color name="primary_dark">#29354a</color> <!-- Darkened Base Greyish-Blue Color -->
+    <color name="primary_variant_dark">#243046</color> <!-- Darkened Slightly Desaturated Greyish-Blue -->
+    <color name="secondary_dark">#1c2836</color> <!-- Darkened Further Greyish-Blue -->
+    <color name="secondary_variant_dark">#101821</color> <!-- Extremely Dark Desaturated Greyish-Blue Shade -->
+    <color name="background_dark">#181818</color> <!-- Darker Deep Gray -->
+    <color name="on_primary_dark">#FFFFFF</color> <!-- White Text/Icons on Primary Dark -->
+    <color name="on_secondary_dark">#FFFFFF</color> <!-- White Text/Icons on Secondary Dark -->
 </resources>

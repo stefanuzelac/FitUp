@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Placeholder Placeholder"
-        android:textColor="#fff"
+        android:textColor="@color/secondary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="placeholder@email"
-        android:textColor="#fff"
+        android:textColor="@color/secondary"
         android:textSize="16sp" />
 
 </LinearLayout>

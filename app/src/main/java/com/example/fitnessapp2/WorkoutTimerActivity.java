@@ -146,7 +146,7 @@ public class WorkoutTimerActivity extends BaseActivity {
         });
 
         // Fetch the color from the resources
-        defaultBorderColor = getResources().getColor(R.color.colorAccent);
+        defaultBorderColor = getResources().getColor(R.color.primary_variant);
     }
 
     //converting my total time to milliseconds

@@ -6,18 +6,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:title="@string/app_name">
-
-    </androidx.appcompat.widget.Toolbar>
+    <include layout="@layout/toolbar_with_borders"/>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -39,100 +28,362 @@
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginTop="5dp"
                     android:columnCount="3"
-                    android:rowCount="3"
                     android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
+                    android:rowCount="3">
 
-                    <Button
-                        android:id="@+id/biceps_button"
+                    <!-- BICEPS CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/biceps_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:text="BICEPS"
-                        android:textSize="13sp" />
+                        android:clickable="true"
+                        android:contentDescription="@string/biceps"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
-                    <Button
-                        android:id="@+id/triceps_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/biceps_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_biceps" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/biceps_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
+                                android:text="BICEPS"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- TRICEPS CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/triceps_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="TRICEPS"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        android:clickable="true"
+                        android:contentDescription="@string/triceps"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
-                    <Button
-                        android:id="@+id/chest_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/triceps_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_triceps" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/triceps_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
+                                android:text="TRICEPS"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- CHEST CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/chest_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="CHEST"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        android:clickable="true"
+                        android:contentDescription="@string/chest"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
-                    <Button
-                        android:id="@+id/lats_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/chest_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_chest" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/chest_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
+                                android:text="CHEST"
+                                android:textSize="13sp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- LATS CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/lats_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="LATS"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/lats">
 
-                    <Button
-                        android:id="@+id/middle_back_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/lats_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_lats"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/lats_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="LATS"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- MIDDLE BACK CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/middle_back_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="MIDDLE BACK"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/middle_back">
 
-                    <Button
-                        android:id="@+id/lower_back_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/middle_back_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_middle_back"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/middle_back_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="MIDDLE BACK"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- LOWER BACK CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/lower_back_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="LOWER BACK"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/lower_back">
 
-                    <Button
-                        android:id="@+id/glutes_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/lower_back_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_lower_back"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/lower_back_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="LOWER BACK"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- GLUTES CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/glutes_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="GLUTES"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/glutes">
 
-                    <Button
-                        android:id="@+id/hamstrings_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/glutes_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_glutes"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/glutes_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="GLUTES"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- HAMSTRINGS CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/hamstrings_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="HAMSTRINGS"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/hamstrings">
 
-                    <Button
-                        android:id="@+id/quadriceps_button"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/hamstrings_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_hamstrings"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/hamstrings_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="HAMSTRINGS"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- QUADRICEPS CardView -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/quadriceps_card"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-                        android:text="QUADRICEPS"
+                        android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        android:textSize="13sp"/>
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/quadriceps">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/quadriceps_icon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_quadriceps"
+                                android:layout_centerHorizontal="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/quadriceps_icon"
+                                android:layout_centerHorizontal="true"
+                                android:text="QUADRICEPS"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp" />
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
                 </GridLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

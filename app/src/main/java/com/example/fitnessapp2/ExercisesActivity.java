@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,17 +24,17 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
     private ExerciseApi exerciseApi;
     private RecyclerView exercisesRecyclerView;
     private ExercisesAdapter exercisesAdapter;
-    private Button bicepsButton, tricepsButton, chestButton, latsButton,
-            middleBackButton, lowerBackButton, glutesButton, hamstringsButton, quadricepsButton;
+    private CardView bicepsCard, tricepsCard, chestCard, latsCard,
+            middleBackCard, lowerBackCard, glutesCard, hamstringsCard, quadricepsCard;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
         setupToolbarAndDrawer();
-        //set up the RecyclerView and adapter
+
+        // set up the RecyclerView and adapter
         exercisesRecyclerView = findViewById(R.id.exercises_recycler_view);
-        //set the layout manager
         exercisesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         exercisesAdapter = new ExercisesAdapter(new ArrayList<>());
         exercisesRecyclerView.setAdapter(exercisesAdapter);
@@ -42,32 +43,32 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
         exerciseApi = new ExerciseApiImpl();
         exerciseApi.setExerciseCallback(this);
 
-        bicepsButton = findViewById(R.id.biceps_button);
-        bicepsButton.setOnClickListener(view -> onBicepsButtonClick());
+        bicepsCard = findViewById(R.id.biceps_card);
+        bicepsCard.setOnClickListener(view -> onBicepsButtonClick());
 
-        tricepsButton = findViewById(R.id.triceps_button);
-        tricepsButton.setOnClickListener(view -> onTricepsButtonClick());
+        tricepsCard = findViewById(R.id.triceps_card);
+        tricepsCard.setOnClickListener(view -> onTricepsButtonClick());
 
-        chestButton = findViewById(R.id.chest_button);
-        chestButton.setOnClickListener(view -> onChestButtonClick());
+        chestCard = findViewById(R.id.chest_card);
+        chestCard.setOnClickListener(view -> onChestButtonClick());
 
-        latsButton = findViewById(R.id.lats_button);
-        latsButton.setOnClickListener(view -> onLatsButtonClick());
+        latsCard = findViewById(R.id.lats_card);
+        latsCard.setOnClickListener(view -> onLatsButtonClick());
 
-        middleBackButton = findViewById(R.id.middle_back_button);
-        middleBackButton.setOnClickListener(view -> onMiddleBackButtonClick());
+        middleBackCard = findViewById(R.id.middle_back_card);
+        middleBackCard.setOnClickListener(view -> onMiddleBackButtonClick());
 
-        lowerBackButton = findViewById(R.id.lower_back_button);
-        lowerBackButton.setOnClickListener(view -> onLowerBackButtonClick());
+        lowerBackCard = findViewById(R.id.lower_back_card);
+        lowerBackCard.setOnClickListener(view -> onLowerBackButtonClick());
 
-        glutesButton = findViewById(R.id.glutes_button);
-        glutesButton.setOnClickListener(view -> onGlutesButtonClick());
+        glutesCard = findViewById(R.id.glutes_card);
+        glutesCard.setOnClickListener(view -> onGlutesButtonClick());
 
-        hamstringsButton = findViewById(R.id.hamstrings_button);
-        hamstringsButton.setOnClickListener(view -> onHamstringsButtonClick());
+        hamstringsCard = findViewById(R.id.hamstrings_card);
+        hamstringsCard.setOnClickListener(view -> onHamstringsButtonClick());
 
-        quadricepsButton = findViewById(R.id.quadriceps_button);
-        quadricepsButton.setOnClickListener(view -> onQuadricepsButtonClick());
+        quadricepsCard = findViewById(R.id.quadriceps_card);
+        quadricepsCard.setOnClickListener(view -> onQuadricepsButtonClick());
     }
     //if api request succeeded
     @Override

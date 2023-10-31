@@ -25,15 +25,16 @@ public class ProgressTrackerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_tracker);
-
         setupToolbarAndDrawer();
 
-        userId = getIntent().getIntExtra("loggedInUserId", -1);
-        if (userId == -1) {
-            //handle the error by finishing activity
+        // Get the currentUser from UserSessionManager
+        User currentUser = UserSessionManager.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            // Handle this case, maybe finish the activity or redirect to login
             finish();
             return;
         }
+        userId = currentUser.getId(); // Assuming you have a getId method in the User model
 
         workoutLogsRecyclerView = findViewById(R.id.workout_logs_recycler_view);
         DatabaseHelper dbHelper = new DatabaseHelper(this);
