@@ -34,9 +34,9 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:text="Workout Timer"
+                    android:text="Timer"
                     android:textColor="@color/on_primary"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     app:backgroundTint="@null" />
 
                 <com.google.android.material.button.MaterialButton
@@ -51,7 +51,7 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="Exercises"
                     android:textColor="@color/on_primary"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     app:backgroundTint="@null" />
 
                 <com.google.android.material.button.MaterialButton
@@ -63,9 +63,9 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:text="Nutrition Values"
+                    android:text="Nutrition"
                     android:textColor="@color/on_primary"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     app:backgroundTint="@null" />
             </LinearLayout>
         </FrameLayout>

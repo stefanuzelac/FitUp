@@ -43,7 +43,7 @@ public class ProgressTrackerActivity extends BaseActivity {
         workoutLogsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         workoutLogsRecyclerView.setAdapter(workoutLogsAdapter);
 
-
+/*
         addWorkoutLogButton = findViewById(R.id.add_workout_log_button);
         addWorkoutLogButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +81,7 @@ public class ProgressTrackerActivity extends BaseActivity {
                 }
             }
         });
-
+*/
         workoutLogsAdapter.setOnItemClickListener(new WorkoutLogsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_borders"/>
+    <include layout="@layout/toolbar_with_borders" />
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -25,62 +25,142 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/exercise_input"
+                <!-- Instructional TextView -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="25dp"
+                    android:text="Select Workout Type:"
+                    android:textColor="@color/secondary_variant"
+                    android:textSize="20sp" />
+
+                <!-- Workout Type Card Buttons -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_gravity="center"
-                    android:hint="Exercise" />
+                    android:orientation="horizontal"
+                    android:spacing="10dp">
 
-                <EditText
-                    android:id="@+id/sets_input"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:hint="Sets"
-                    android:inputType="number" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/weightlifting_card"
+                        style="@style/Widget.MaterialComponents.CardView"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:strokeColor="@color/secondary_variant"
+                        app:strokeWidth="2dp">
 
-                <EditText
-                    android:id="@+id/reps_input"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:hint="Reps"
-                    android:inputType="number" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_weightlifting" />
 
-                <EditText
-                    android:id="@+id/weight_input"
-                    android:layout_width="150dp"
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/running_card"
+                        style="@style/Widget.MaterialComponents.CardView"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:strokeColor="@color/secondary_variant"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_running" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cycling_card"
+                        style="@style/Widget.MaterialComponents.CardView"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:strokeColor="@color/secondary_variant"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_cycling" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/swimming_card"
+                        style="@style/Widget.MaterialComponents.CardView"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        app:strokeColor="@color/secondary_variant"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_swimming" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- Space for workout-specific input fields -->
+                <FrameLayout
+                    android:id="@+id/workout_specific_input_frame"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:hint="Weight (kg)"
-                    android:inputType="numberDecimal" />
+                    android:visibility="gone">
+                    <!-- This frame will host fragments or views specific to each workout type -->
+                </FrameLayout>
 
                 <Button
                     android:id="@+id/add_workout_log_button"
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
-                    android:text="Add Workout"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:text="Add Workout" />
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/workout_logs_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scrollbars="vertical" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/workout_logs_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:scrollbars="vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </LinearLayout>
             </LinearLayout>
 
         </FrameLayout>
@@ -94,6 +174,5 @@
             app:menu="@menu/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
-
 
 </LinearLayout>
