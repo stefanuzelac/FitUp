@@ -60,7 +60,6 @@ public class NutritionActivity extends BaseActivity implements NutritionCallback
         });
     }
 
-
     //if api request succeed
     @Override
     public void onSuccess(List<NutritionInfo> nutritionInfoList) {

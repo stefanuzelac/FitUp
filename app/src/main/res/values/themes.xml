@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="BaseTheme.FitnessApp2" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:fontFamily">@font/raleway_font_family</item>
+        <item name="android:fontFamily">@font/exo2_font_family</item>
     </style>
 
     <!-- Light theme -->

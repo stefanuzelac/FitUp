@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_borders"/>
+    <include layout="@layout/toolbar_with_borders" />
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -158,12 +158,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/lats"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/lats">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -174,17 +174,17 @@
                                 android:id="@+id/lats_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_lats"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_lats" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/lats_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="LATS"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -197,12 +197,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/middle_back"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/middle_back">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -213,17 +213,17 @@
                                 android:id="@+id/middle_back_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_middle_back"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_middle_back" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/middle_back_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="MIDDLE BACK"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -236,12 +236,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/lower_back"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/lower_back">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -252,17 +252,17 @@
                                 android:id="@+id/lower_back_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_lower_back"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_lower_back" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/lower_back_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="LOWER BACK"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -275,12 +275,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/glutes"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/glutes">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -291,17 +291,17 @@
                                 android:id="@+id/glutes_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_glutes"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_glutes" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/glutes_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="GLUTES"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -314,12 +314,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/hamstrings"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/hamstrings">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -330,17 +330,17 @@
                                 android:id="@+id/hamstrings_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_hamstrings"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_hamstrings" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/hamstrings_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="HAMSTRINGS"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -353,12 +353,12 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_margin="1dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
                         android:clickable="true"
+                        android:contentDescription="@string/quadriceps"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:contentDescription="@string/quadriceps">
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -369,17 +369,17 @@
                                 android:id="@+id/quadriceps_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/ic_quadriceps"
-                                android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_quadriceps" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/quadriceps_icon"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="8dp"
                                 android:text="QUADRICEPS"
-                                android:textSize="13sp"
-                                android:layout_marginTop="8dp" />
+                                android:textSize="13sp" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>

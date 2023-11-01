@@ -68,7 +68,14 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
 
         holder.exerciseNameTextView.setText(ExerciseVideoUtility.toTitleCase(exercise.getName()));
         holder.exerciseDifficultyTextView.setText(exercise.getDifficulty().toUpperCase(Locale.ROOT));
-        holder.exerciseInstructionsTextView.setText(exercise.getInstructions());
+
+        // Parse and set instructions as bullet points
+        String[] instructionSteps = parseInstructions(exercise.getInstructions());
+        StringBuilder formattedInstructions = new StringBuilder();
+        for (String step : instructionSteps) {
+            formattedInstructions.append("• ").append(step).append("\n");
+        }
+        holder.exerciseInstructionsTextView.setText(formattedInstructions.toString().trim());
 
         // Possibly add an animation here, for example a fade-in effect for the card
         setEnterAnimation(holder.itemView, position);
@@ -125,4 +132,23 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
         exercises.addAll(newExercises);
         notifyDataSetChanged();
     }
+
+    public void addNewExercises(List<Exercise> newExercises) {
+        int initialSize = exercises.size();
+        exercises.addAll(newExercises);
+        notifyItemRangeInserted(initialSize, newExercises.size());
+    }
+
+    private String[] parseInstructions(String instructions) {
+        // Split the instructions by a period followed by space or end of line
+        String[] steps = instructions.split("\\.\\s+|\\.$");
+
+        // Remove any leading or trailing whitespace from each step
+        for (int i = 0; i < steps.length; i++) {
+            steps[i] = steps[i].trim();
+        }
+
+        return steps;
+    }
+
 }

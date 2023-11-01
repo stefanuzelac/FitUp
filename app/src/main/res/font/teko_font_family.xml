@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Light -->
+    <font
+        app:font="@font/teko_light"
+        app:fontStyle="normal"
+        app:fontWeight="300" />
+
+    <!-- Regular -->
+    <font
+        app:font="@font/teko_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+
+    <!-- Medium -->
+    <font
+        app:font="@font/teko_medium"
+        app:fontStyle="normal"
+        app:fontWeight="500" />
+
+    <!-- SemiBold -->
+    <font
+        app:font="@font/teko_semibold"
+        app:fontStyle="normal"
+        app:fontWeight="600" />
+
+    <!-- Bold -->
+    <font
+        app:font="@font/teko_bold"
+        app:fontStyle="normal"
+        app:fontWeight="700" />
+
+</font-family>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Regular -->
+    <font
+        android:font="@font/exo2_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+
+    <!-- Italic -->
+    <font
+        android:font="@font/exo2_italic"
+        android:fontStyle="italic"
+        android:fontWeight="400" />
+
+    <!-- Bold -->
+    <font
+        android:font="@font/exo2_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700" />
+
+    <!-- Bold Italic -->
+    <font
+        android:font="@font/exo2_bold_italic"
+        android:fontStyle="italic"
+        android:fontWeight="700" />
+
+    <!-- Add other styles as needed -->
+
+</font-family>

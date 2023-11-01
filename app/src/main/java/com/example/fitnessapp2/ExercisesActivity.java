@@ -2,6 +2,7 @@ package com.example.fitnessapp2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -70,51 +71,64 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
         quadricepsCard = findViewById(R.id.quadriceps_card);
         quadricepsCard.setOnClickListener(view -> onQuadricepsButtonClick());
     }
+
     //if api request succeeded
     @Override
     public void onSuccess(List<Exercise> exerciseList) {
-        //make sure i am running on the UI thread
+        //make sure I am running on the UI thread
         runOnUiThread(() -> {
-            //update the adapter with the new list of exercises received from API
+            Log.d("DEBUG", "onSuccess called with " + exerciseList.size() + " exercises");
+
+            exercisesRecyclerView.setLayoutManager(null);
+            exercisesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
             exercisesAdapter.updateExercises(exerciseList);
-            //notify the adapter that the data has changed
-            exercisesAdapter.notifyDataSetChanged();
-            //print a log message to indicate that the exercises list was updated - debugging purposes
-            Log.d("ExercisesActivity", "Updated exercises list with "
-                    + exerciseList.size()
-                    + " exercises");
+            new Handler().postDelayed(() -> exercisesRecyclerView.scrollToPosition(0), 100);
+
+            Log.d("DEBUG", "RecyclerView should now be scrolled to the top");
         });
     }
+
+
     @Override
     public void onError(Exception e) {
         runOnUiThread(() -> Toast.makeText(this, "Error while getting exercises: "
                 + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
     //when the biceps button is clicked make a call to the API to get a list of exercises for biceps, same procedure for other buttons
     public void onBicepsButtonClick() {
         exerciseApi.getExercises("biceps", this);
     }
+
     public void onTricepsButtonClick() {
         exerciseApi.getExercises("triceps", this);
     }
+
     public void onChestButtonClick() {
         exerciseApi.getExercises("chest", this);
     }
+
     public void onLatsButtonClick() {
         exerciseApi.getExercises("lats", this);
     }
+
     public void onMiddleBackButtonClick() {
         exerciseApi.getExercises("middle_back", this);
     }
+
     public void onLowerBackButtonClick() {
         exerciseApi.getExercises("lower_back", this);
     }
+
     public void onGlutesButtonClick() {
         exerciseApi.getExercises("glutes", this);
     }
+
     public void onHamstringsButtonClick() {
         exerciseApi.getExercises("hamstrings", this);
     }
+
     public void onQuadricepsButtonClick() {
         exerciseApi.getExercises("quadriceps", this);
     }

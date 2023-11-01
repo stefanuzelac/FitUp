@@ -35,6 +35,8 @@ public class ExerciseApiImpl implements ExerciseApi {
 
                 Response response = client.newCall(request).execute();
                 String responseString = response.body().string();
+                Log.d("API_RESPONSE", "Response for " + muscle + ": " + responseString);
+
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode root = mapper.readTree(responseString);
 
