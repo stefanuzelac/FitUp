@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/weightlifting_sets_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Sets"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/weightlifting_reps_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Reps"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/weightlifting_weight_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Weight (kg)"
+        android:inputType="numberDecimal" />
+</LinearLayout>

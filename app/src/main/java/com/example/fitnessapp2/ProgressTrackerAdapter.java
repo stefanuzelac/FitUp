@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.WorkoutLogViewHolder> {
+public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTrackerAdapter.WorkoutLogViewHolder> {
     private Cursor workoutCursor;
     private Context workoutContext;
     private OnItemClickListener mClickListener;
 
-    public WorkoutLogsAdapter(Context context, Cursor cursor) {
+    public ProgressTrackerAdapter(Context context, Cursor cursor) {
         workoutContext = context;
         workoutCursor = cursor;
     }
@@ -78,7 +78,6 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
         }
     }
 
-
     @Override
     public int getItemCount() {
         return workoutCursor.getCount();
@@ -103,7 +102,6 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
         return workoutCursor;
     }
 
-
     //interface for making items clickable
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -112,5 +110,4 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
     }
-
 }

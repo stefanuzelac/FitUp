@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/swimming_lap_count_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Laps completed"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/swimming_pool_size_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Pool size (meters)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/swimming_time_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Duration (HH:MM:SS)"
+        android:inputType="time" />
+</LinearLayout>

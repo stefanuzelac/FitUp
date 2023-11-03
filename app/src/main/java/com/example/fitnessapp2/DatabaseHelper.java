@@ -16,30 +16,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    //called when the database is first created
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //create the "users" table with columns for id, name, last_name, email, password, phone, dob, and remember_me
         db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, last_name TEXT, email TEXT, password TEXT, phone TEXT, dob TEXT, age INTEGER, gender TEXT, height INTEGER, weight REAL, profile_picture TEXT, remember_me INTEGER DEFAULT 0)");
-
-        // Create the "workout_logs" table
         db.execSQL("CREATE TABLE IF NOT EXISTS workout_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, exercise TEXT, sets INTEGER, reps INTEGER, weight REAL, date TEXT, FOREIGN KEY(user_id) REFERENCES users(id))");
-
-        // Create the "meal_logs" table
         db.execSQL("CREATE TABLE IF NOT EXISTS meal_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, meal TEXT, fats DOUBLE, carbs DOUBLE, protein DOUBLE, date TEXT, FOREIGN KEY(user_id) REFERENCES users(id))");
-
     }
 
     //called when the database needs to be upgraded
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //if the old version is less than 2 add a column called "remember_me" to the "users" table with a default value of 0
-        if (oldVersion < 2) {
+            if (oldVersion < 2) {
             db.execSQL("ALTER TABLE " + "users" + " ADD COLUMN remember_me INTEGER DEFAULT 0");
         }
     }
 
-    //inserts a new row into the "users" table with the given values
     public long insertData(String name, String lastName, String email, String password, String phone, String dob) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -54,17 +45,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-
-    //retrieve all rows from the "users" table
-    //used this for development cycle
     public Cursor retrieveData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM users", null);
         return cursor;
     }
 
-    //update the row in the "users" table with the given id with the given values
-    //probably won't be using this because I don't plan to allow this data to be changed after initial process
     public boolean updateData(String id, String name, String last_name, String email, String password, String phone, String dob) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -79,14 +65,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    //deletes the row in the "users" table with the given id
     public Integer deleteData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("users", "id = ?", new String[]{id});
     }
 
-    //method for getting user for future operations, e.g. login process, setting user info within nav menu,
-    // setting user name, last name, and age in AccountActivity, and future progress tracking
     public User getUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -160,52 +143,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d("DBHelper", "No user found with the provided credentials.");
         }
-
-        //close cursor and the database connection
         cursor.close();
         db.close();
-
-        //return the User object or null if no results were found
         return user;
     }
-
-    /*
-    //print data for debugging purposes
-    public void printData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM users", null);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            if (cursor.moveToFirst()) {
-                do {
-                    int idIndex = cursor.getColumnIndex("id");
-                    int nameIndex = cursor.getColumnIndex("name");
-                    int lastNameIndex = cursor.getColumnIndex("last_name");
-                    int emailIndex = cursor.getColumnIndex("email");
-                    int passwordIndex = cursor.getColumnIndex("password");
-                    int phoneIndex = cursor.getColumnIndex("phone");
-                    int dobIndex = cursor.getColumnIndex("dob");
-
-                    String id = idIndex != -1 ? cursor.getString(idIndex) : "";
-                    String name = nameIndex != -1 ? cursor.getString(nameIndex) : "";
-                    String lastName = lastNameIndex != -1 ? cursor.getString(lastNameIndex) : "";
-                    String email = emailIndex != -1 ? cursor.getString(emailIndex) : "";
-                    String password = passwordIndex != -1 ? cursor.getString(passwordIndex) : "";
-                    String phone = phoneIndex != -1 ? cursor.getString(phoneIndex) : "";
-                    String dob = dobIndex != -1 ? cursor.getString(dobIndex) : "";
-
-                    Log.d("Database", "User: " + id + " - " + name + " " + lastName + ", " + email + ", " + password + ", " + phone + ", " + dob);
-                } while (cursor.moveToNext());
-            }
-        } else {
-            Log.d("Database", "No data found.");
-        }
-
-        cursor.close();
-        db.close();
-    }
-
-    */
 
     public boolean updateUserProfile(User user, String gender, int height, double weight, String profile_picture) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -218,8 +159,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-
-    //doesn't clear auto increment sequence of ID, need separate SQL statement
     public void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("users", null, null);
@@ -232,7 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //innserts a new row into the "workout_logs" table with the given values
+    //inserts a new row into the "workout_logs" table with the given values
     public boolean insertWorkoutLog(int userId, String exercise, int sets, int reps, double weight, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

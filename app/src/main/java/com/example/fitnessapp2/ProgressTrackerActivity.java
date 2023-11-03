@@ -1,5 +1,7 @@
 package com.example.fitnessapp2;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,16 +10,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class ProgressTrackerActivity extends BaseActivity {
     private RecyclerView workoutLogsRecyclerView;
-    private WorkoutLogsAdapter workoutLogsAdapter;
+    private ProgressTrackerAdapter workoutLogsAdapter;
     private int userId;
     private Button addWorkoutLogButton;
 
@@ -39,7 +36,7 @@ public class ProgressTrackerActivity extends BaseActivity {
         workoutLogsRecyclerView = findViewById(R.id.workout_logs_recycler_view);
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         Cursor workoutLogsCursor = dbHelper.getWorkoutLogsByUserId(userId); // Replace userId with the actual user ID
-        workoutLogsAdapter = new WorkoutLogsAdapter(this, workoutLogsCursor);
+        workoutLogsAdapter = new ProgressTrackerAdapter(this, workoutLogsCursor);
         workoutLogsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         workoutLogsRecyclerView.setAdapter(workoutLogsAdapter);
 
@@ -82,7 +79,7 @@ public class ProgressTrackerActivity extends BaseActivity {
             }
         });
 */
-        workoutLogsAdapter.setOnItemClickListener(new WorkoutLogsAdapter.OnItemClickListener() {
+        workoutLogsAdapter.setOnItemClickListener(new ProgressTrackerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Cursor currentCursor = workoutLogsAdapter.getCursor();
@@ -115,6 +112,18 @@ public class ProgressTrackerActivity extends BaseActivity {
                 }
             }
         });
+        // Setup click listeners for workout type selections
+        findViewById(R.id.weightlifting_card).setOnClickListener(v -> showWorkoutTypeFragment(new WeightliftingFragment()));
+        findViewById(R.id.running_card).setOnClickListener(v -> showWorkoutTypeFragment(new RunningFragment()));
+        findViewById(R.id.cycling_card).setOnClickListener(v -> showWorkoutTypeFragment(new CyclingFragment()));
+        findViewById(R.id.swimming_card).setOnClickListener(v -> showWorkoutTypeFragment(new SwimmingFragment()));
+    }
 
+    private void showWorkoutTypeFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.workout_specific_input_frame, fragment);
+        transaction.commit();
+        // Make the FrameLayout visible if it's not already
+        findViewById(R.id.workout_specific_input_frame).setVisibility(View.VISIBLE);
     }
 }
