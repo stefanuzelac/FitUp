@@ -21,14 +21,8 @@ public class BaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
     protected DrawerLayout drawer;
     protected NavigationView navigationView;
-    protected int loggedInUserId = -1;
     private SharedPreferences sharedPref;
     protected User currentUser;
-
-    //set logged in user
-    public void setLoggedInUserId(int userId) {
-        loggedInUserId = userId;
-    }
 
     protected void setupToolbarAndDrawer() {
         toolbar = findViewById(R.id.toolbar);
@@ -37,7 +31,6 @@ public class BaseActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
 
         sharedPref = getSharedPreferences("app_pref", MODE_PRIVATE);
-        loggedInUserId = sharedPref.getInt("loggedInUserId", -1);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -58,44 +51,45 @@ public class BaseActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                // Get the current user from the session manager
+                User currentUser = UserSessionManager.getInstance().getCurrentUser();
+                if (currentUser == null) {
+                    Toast.makeText(BaseActivity.this, "User not logged in. Please log in again.",
+                            Toast.LENGTH_SHORT).show();
+                    logout();
+                    return true;
+                }
+
+                int currentUserId = currentUser.getId();
+
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Intent intent = new Intent(BaseActivity.this, AppMainPageActivity.class);
+                        intent = new Intent(BaseActivity.this, AppMainPageActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.nav_account:
-                        Intent intent2 = new Intent(BaseActivity.this, AccountActivity.class);
-                        startActivity(intent2);
+                        intent = new Intent(BaseActivity.this, AccountActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.nav_progress_tracker:
-                        if (loggedInUserId == -1) {
-                            Toast.makeText(BaseActivity.this, "User ID not found. Please log in again.",
-                                    Toast.LENGTH_SHORT).show();
-                            return true;
-                        }
-                        Intent intent3 = new Intent(BaseActivity.this, ProgressTrackerActivity.class);
-                        intent3.putExtra("loggedInUserId", loggedInUserId);
-                        startActivity(intent3);
+                        intent = new Intent(BaseActivity.this, ProgressTrackerActivity.class);
+                        intent.putExtra("currentUserId", currentUserId);
+                        startActivity(intent);
                         break;
                     case R.id.nav_macro_tracker:
-                        if (loggedInUserId == -1) {
-                            Toast.makeText(BaseActivity.this, "User ID not found. Please log in again.",
-                                    Toast.LENGTH_SHORT).show();
-                            return true;
-                        }
-                        Intent intent4 = new Intent(BaseActivity.this, MacroTrackerActivity.class);
-                        intent4.putExtra("loggedInUserId", loggedInUserId);
-                        startActivity(intent4);
+                        intent = new Intent(BaseActivity.this, MacroTrackerActivity.class);
+                        intent.putExtra("currentUserId", currentUserId);
+                        startActivity(intent);
                         break;
                     case R.id.nav_settings:
-                        Intent intent5 = new Intent(BaseActivity.this, SettingsActivity.class);
-                        intent5.putExtra("loggedInUserId", loggedInUserId);
-                        startActivity(intent5);
+                        intent = new Intent(BaseActivity.this, SettingsActivity.class);
+                        intent.putExtra("currentUserId", currentUserId);
+                        startActivity(intent);
                         break;
                     case R.id.nav_logout:
                         logout();
                         break;
-
                 }
                 return true;
             }
@@ -127,8 +121,8 @@ public class BaseActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             // We have a valid user, so update the name and email in the Navigation Drawer
-            nameTextView.setText(currentUser.getName()); // Assuming 'getName' is a method from your 'User' model
-            emailTextView.setText(currentUser.getEmail()); // Same assumption as above
+            nameTextView.setText(currentUser.getName());
+            emailTextView.setText(currentUser.getEmail());
         } else {
             // No user is logged in, so show a generic message
             nameTextView.setText("Guest");
@@ -140,20 +134,16 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getClass().equals(MainActivity.class)) {
-            finishAffinity();
-        } else if (getClass().equals(RegistrationActivity.class)) {
+            finishAffinity(); // Closes the app if we're on the main activity.
+        } else if (getClass().equals(RegistrationActivity.class) || getClass().equals(AppMainPageActivity.class)) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish();
-        } else if (getClass().equals(AppMainPageActivity.class)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            finish(); // Returns to the main activity (login screen).
         } else {
+            // If we're in any other activity, we want to return to the AppMainPageActivity.
             Intent intent = new Intent(this, AppMainPageActivity.class);
-            intent.putExtra("loggedInUserId", loggedInUserId);
             startActivity(intent);
-            finish();
+            finish(); // Finishes the current activity and returns to the main page of the app.
         }
     }
 
@@ -161,12 +151,11 @@ public class BaseActivity extends AppCompatActivity {
         // Clear the current user in UserSessionManager
         UserSessionManager.getInstance().setCurrentUser(null);
 
-        // Clear shared preferences if needed
+        // Clear shared preferences related to login details
         SharedPreferences sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove("email");
         editor.remove("password");
-        editor.remove("loggedInUserId");
         editor.putBoolean("rememberMeCheckboxState", false);
         editor.apply();
 
@@ -176,5 +165,4 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Close the current activity
     }
-
 }

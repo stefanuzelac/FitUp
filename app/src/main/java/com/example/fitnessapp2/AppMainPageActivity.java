@@ -10,7 +10,6 @@ import com.google.android.material.button.MaterialButton;
 public class AppMainPageActivity extends BaseActivity {
     //declaring my buttons
     private MaterialButton workoutTimerButton, exercisesButton, nutritionButton;
-    int loggedInUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +24,6 @@ public class AppMainPageActivity extends BaseActivity {
             finish();
             return;
         }
-        loggedInUserId = currentUser.getId(); // Assuming you have a getId method in the User model
-        setLoggedInUserId(loggedInUserId);
 
         //find the workout timer button in the layout file and add a listener to open the workout timer activity
         workoutTimerButton = findViewById(R.id.workout_timer_button);

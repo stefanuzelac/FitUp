@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:hint="Meal" />
+                    android:hint="Meal (e.g. Lunch)" />
 
                 <EditText
                     android:id="@+id/fats_input"

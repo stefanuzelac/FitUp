@@ -10,14 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTrackerAdapter.WorkoutLogViewHolder> {
-    private Cursor workoutCursor;
+    private List<WorkoutLog> workoutLogs;
     private Context workoutContext;
     private OnItemClickListener mClickListener;
 
-    public ProgressTrackerAdapter(Context context, Cursor cursor) {
+    public ProgressTrackerAdapter(Context context, List<WorkoutLog> workoutLogs) {
         workoutContext = context;
-        workoutCursor = cursor;
+        this.workoutLogs = workoutLogs;
     }
 
     public class WorkoutLogViewHolder extends RecyclerView.ViewHolder {
@@ -51,55 +53,47 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
 
     @Override
     public void onBindViewHolder(@NonNull WorkoutLogViewHolder holder, int position) {
-        if (!workoutCursor.moveToPosition(position)) {
-            return;
+        WorkoutLog log = workoutLogs.get(position);
+
+        holder.dateTextView.setText(log.getDate());
+        holder.exerciseTextView.setText(log.getExercise());
+        holder.setsRepsTextView.setText(log.getSets() + "x" + log.getReps());
+        holder.weightTextView.setText(log.getWeight() + " kg");
+    }
+
+    // Method to add a WorkoutLog
+    public void addWorkoutLog(WorkoutLog workoutLog) {
+        workoutLogs.add(workoutLog);
+        notifyItemInserted(workoutLogs.size() - 1);
+    }
+
+    // Method to remove a WorkoutLog at a specific position
+    public void removeWorkoutLogAtPosition(int position) {
+        if (position >= 0 && position < workoutLogs.size()) {
+            workoutLogs.remove(position);
+            notifyItemRemoved(position);
         }
+    }
 
-        int dateColumnIndex = workoutCursor.getColumnIndex("date");
-        int exerciseColumnIndex = workoutCursor.getColumnIndex("exercise");
-        int setsColumnIndex = workoutCursor.getColumnIndex("sets");
-        int repsColumnIndex = workoutCursor.getColumnIndex("reps");
-        int weightColumnIndex = workoutCursor.getColumnIndex("weight");
-
-        if (exerciseColumnIndex != -1 && setsColumnIndex != -1 && repsColumnIndex != -1 &&
-                weightColumnIndex != -1 && dateColumnIndex != -1) {
-
-            String date = workoutCursor.getString(dateColumnIndex);
-            String exercise = workoutCursor.getString(exerciseColumnIndex);
-            int sets = workoutCursor.getInt(setsColumnIndex);
-            int reps = workoutCursor.getInt(repsColumnIndex);
-            double weight = workoutCursor.getDouble(weightColumnIndex);
-
-
-            holder.dateTextView.setText(date);
-            holder.exerciseTextView.setText(exercise);
-            holder.setsRepsTextView.setText(sets + "x" + reps); //displaying sets and reps together
-            holder.weightTextView.setText(String.valueOf(weight) + " kg");
+    // Method to update a WorkoutLog at a specific position
+    public void updateWorkoutLogAtPosition(int position, WorkoutLog workoutLog) {
+        if (position >= 0 && position < workoutLogs.size()) {
+            workoutLogs.set(position, workoutLog);
+            notifyItemChanged(position);
         }
+    }
+
+    // Method to get a WorkoutLog at a specific position
+    public WorkoutLog getWorkoutLogAtPosition(int position) {
+        if (position >= 0 && position < workoutLogs.size()) {
+            return workoutLogs.get(position);
+        }
+        return null;
     }
 
     @Override
     public int getItemCount() {
-        return workoutCursor.getCount();
-    }
-
-    public Cursor swapCursor(Cursor newCursor) {
-        if (workoutCursor == newCursor) {
-            return null;
-        }
-
-        Cursor oldCursor = workoutCursor;
-        workoutCursor = newCursor;
-
-        if (newCursor != null) {
-            notifyDataSetChanged();
-        }
-
-        return oldCursor;
-    }
-
-    public Cursor getCursor() {
-        return workoutCursor;
+        return workoutLogs.size();
     }
 
     //interface for making items clickable
@@ -110,4 +104,11 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
     }
+
+    // Method to update the adapter's dataset
+    public void updateData(List<WorkoutLog> newWorkoutLogs) {
+        workoutLogs = newWorkoutLogs;
+        notifyDataSetChanged(); // This will refresh the RecyclerView
+    }
+
 }

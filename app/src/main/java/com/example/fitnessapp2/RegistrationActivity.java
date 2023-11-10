@@ -26,13 +26,18 @@ public class RegistrationActivity extends AppCompatActivity {
     private Calendar dobCalendar;
     private SimpleDateFormat dateFormatter;
     private String dateOfBirth;
-    private DatabaseHelper myDb;
     String name, lastName, email, password, phone, dob;
+    private UserDAOImpl userDaoImpl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        // Initialize the UserDAOImpl
+        DatabaseHelper db = new DatabaseHelper(this);
+        userDaoImpl = new UserDAOImpl(db);
 
         registerName = findViewById(R.id.registerName);
         registerLastName = findViewById(R.id.registerLastName);
@@ -47,8 +52,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 + "/" + (dobCalendar.get(Calendar.MONTH) + 1)
                 + "/" + dobCalendar.get(Calendar.YEAR));
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
-        myDb = new DatabaseHelper(this);
 
         registerDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,67 +142,25 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(RegistrationActivity.this, "Please select your date of birth", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //if all fields are valid add the user data to the database and get the id of the inserted row
-                long id = addData(name, lastName, email, password, phone, dob);
+                // if all fields are valid, add the user data to the database using DAO
+                boolean isInserted = userDaoImpl.addUser(new User(0, name, lastName, email, password, phone, dob, null, 0, 0, null)); // default values for unprovided fields
 
-                if (id > 0) {
-                    //show a toast message indicating that the registration was successful
+                if (isInserted) {
+                    // show a toast message indicating that the registration was successful
                     Toast.makeText(RegistrationActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                    //retrieve the data that was inserted
-                    SQLiteDatabase db = myDb.getReadableDatabase();
-                    Cursor cursor = db.query("users", null, "id=?", new String[]{String.valueOf(id)}, null, null, null);
-                    if (cursor.moveToFirst()) {
-                        do {
-                            int indexName = cursor.getColumnIndex("name");
-                            String insertedName = "";
-                            if (indexName != -1) {
-                                insertedName = cursor.getString(indexName);
-                            }
 
-                            int indexLastName = cursor.getColumnIndex("last_name");
-                            String insertedLastName = "";
-                            if (indexLastName != -1) {
-                                insertedLastName = cursor.getString(indexLastName);
-                            }
+                    // Optionally retrieve the inserted user data using the DAO if needed
+                    // User insertedUser = userDaoImpl.getUserByEmail(email);
+                    // Log.d("Registered User", "Name: " + insertedUser.getName() + ", Email: " + insertedUser.getEmail());
 
-                            int indexEmail = cursor.getColumnIndex("email");
-                            String insertedEmail = "";
-                            if (indexEmail != -1) {
-                                insertedEmail = cursor.getString(indexEmail);
-                            }
-
-                            int indexPassword = cursor.getColumnIndex("password");
-                            String insertedPassword = "";
-                            if (indexPassword != -1) {
-                                insertedPassword = cursor.getString(indexPassword);
-                            }
-
-                            int indexPhone = cursor.getColumnIndex("phone");
-                            String insertedPhone = "";
-                            if (indexPhone != -1) {
-                                insertedPhone = cursor.getString(indexPhone);
-                            }
-
-                            int indexDOB = cursor.getColumnIndex("dob");
-                            String insertedDOB = "";
-                            if (indexDOB != -1) {
-                                insertedDOB = cursor.getString(indexDOB);
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                    cursor.close();
-                    //start MainActivity
+                    // start MainActivity
                     Intent mainIntent = new Intent(RegistrationActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                 } else {
-                    //show a toast message indicating that the registration was not successful
+                    // show a toast message indicating that the registration was not successful
                     Toast.makeText(RegistrationActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    public long addData(String name, String lastName, String email, String password, String phone, String dob) {
-        return myDb.insertData(name, lastName, email, password, phone, dob );
-    }
+    };
 }

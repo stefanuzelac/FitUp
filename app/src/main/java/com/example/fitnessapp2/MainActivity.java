@@ -21,16 +21,19 @@ public class MainActivity extends BaseActivity {
     Button loginButton, signUpButton;
     CheckBox rememberMeCheckbox;
     DatabaseHelper dbHelper;
-    SharedPreferences sharedPref;
-    Integer loggedInUserId;
+    private PreferenceManager preferenceManager;
     boolean rememberMeCheckboxState;
+    UserDAO userDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Create an instance of the UserDAOImpl using the DatabaseHelper
         dbHelper = new DatabaseHelper(MainActivity.this);
+        userDAO = new UserDAOImpl(dbHelper);
 
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
@@ -41,82 +44,59 @@ public class MainActivity extends BaseActivity {
         String email = "";
         String password = "";
 
-        sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
+        preferenceManager = new PreferenceManager(this);
 
-        rememberMeCheckboxState = sharedPref.getBoolean("rememberMeCheckboxState", false);
+        rememberMeCheckboxState = preferenceManager.getRememberMePreference();
         rememberMeCheckbox.setChecked(rememberMeCheckboxState);
 
         if (rememberMeCheckboxState) {
-            email = sharedPref.getString("email", "");
-            password = sharedPref.getString("password", "");
-            loggedInUserId = sharedPref.getInt("loggedInUserId", -1);
-
-            //set the checkbox to checked if the user has previously checked it
-            rememberMeCheckbox.setChecked(true);
+            loginEmail.setText(preferenceManager.getEmailPreference());
         }
-
+        //set the checkbox change listener
         rememberMeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean("rememberMeCheckboxState", isChecked);
+            preferenceManager.setRememberMePreference(isChecked);
             if (!isChecked) {
-
-                editor.remove("email");
-                editor.remove("password");
-                editor.remove("loggedInUserId");
-                editor.putBoolean("rememberMeCheckboxState", false);
-            }
-            editor.apply();
-        });
-
-        //set the email and password fields to the values stored in SharedPreferences
-        loginEmail.setText(email);
-        loginPassword.setText(password);
-
-        //set up a listener for the login button
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //get the entered email and password
-                String enteredEmail = loginEmail.getText().toString().trim();
-                String enteredPassword = loginPassword.getText().toString().trim();
-
-                //validate that both fields are filled out
-                if (enteredEmail.isEmpty() || enteredPassword.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Check if the email and password combination exists in the database
-                User user = dbHelper.getUser(enteredEmail, enteredPassword);
-                if (user != null) {
-                    // Login successful
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("email", enteredEmail);
-                    editor.putString("password", enteredPassword); // SECURITY NOTE: Consider not storing plain-text passwords.
-                    editor.putInt("loggedInUserId", user.getId());
-                    editor.putString("fullName", user.getName() + " " + user.getLastName());
-                    editor.apply();
-
-                    // Set the current user in UserSessionManager
-                    UserSessionManager.getInstance().setCurrentUser(user);
-
-                    // Proceed to the main app screen, as login was successful
-                    Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
-                    intent.putExtra("loggedInUserId", user.getId()); //passing the user ID to the next activity, use user.getId() to get the correct ID.
-                    startActivity(intent);
-                    finish();
-                } else {
-                    // ... (handle failed login)
-                }
+                //clear preferences if user unchecks the remember me checkbox
+                preferenceManager.clearPreferences();
             }
         });
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+        // Login button listener
+        loginButton.setOnClickListener(view -> {
+            // Get the email and password from the EditTexts
+            String enteredEmail = loginEmail.getText().toString().trim();
+            String enteredPassword = loginPassword.getText().toString().trim();
+
+            // Check for empty fields
+            if (enteredEmail.isEmpty() || enteredPassword.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Try to log the user in
+            User user = userDAO.getUserByEmailAndPassword(enteredEmail, enteredPassword);
+            if (user != null) {
+                // Login success
+                UserSessionManager.getInstance().setCurrentUser(user);
+
+                // If remember me is checked, save credentials
+                if (rememberMeCheckbox.isChecked()) {
+                    preferenceManager.setEmailPreference(enteredEmail);
+                }
+                // GO to main app page
+                Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
                 startActivity(intent);
+                finish();
+            } else {
+                // Clear the password field on failed login
+               loginPassword.setText("");
+               Toast.makeText(MainActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
             }
+        });
+        // Sign up button listener
+        signUpButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -127,8 +107,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // The rest of onResume can handle activity-specific tasks.
-        rememberMeCheckbox.setChecked(rememberMeCheckboxState);
+        // Update the checkbox state from preferences
+        rememberMeCheckbox.setChecked(preferenceManager.getRememberMePreference());
     }
 
     @Override
