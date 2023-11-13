@@ -17,22 +17,22 @@
         android:theme="@style/Theme.FitnessApp2.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ProgressTrackerActivity"
+            android:name=".activities.ProgressTrackerActivity"
             android:exported="false" />
         <activity
-            android:name=".NutritionActivity"
+            android:name=".activities.NutritionActivity"
             android:exported="false" />
         <activity
-            android:name=".MacroTrackerActivity"
+            android:name=".activities.MacroTrackerActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountActivity"
+            android:name=".activities.AccountActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,15 +40,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".activities.RegistrationActivity" />
         <activity
-            android:name=".AppMainPageActivity"
+            android:name=".activities.AppMainPageActivity"
             android:exported="false" />
         <activity
-            android:name=".WorkoutTimerActivity"
+            android:name=".activities.WorkoutTimerActivity"
             android:exported="false" />
         <activity
-            android:name=".ExercisesActivity"
+            android:name=".activities.ExercisesActivity"
             android:exported="false" />
     </application>
 
