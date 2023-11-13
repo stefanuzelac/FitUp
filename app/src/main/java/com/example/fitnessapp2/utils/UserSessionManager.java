@@ -1,16 +1,24 @@
 package com.example.fitnessapp2.utils;
 
+import android.content.Context;
+
+import com.example.fitnessapp2.data.DatabaseHelper;
 import com.example.fitnessapp2.data.User;
+import com.example.fitnessapp2.data.UserDAOImpl;
 
 public class UserSessionManager {
     private static UserSessionManager instance = null;
     private User currentUser;
+    private final UserDAOImpl userDao;
 
-    private UserSessionManager() { }
+    private UserSessionManager(Context context) {
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+        this.userDao = new UserDAOImpl(dbHelper);
+    }
 
-    public static UserSessionManager getInstance() {
+    public static UserSessionManager getInstance(Context context) {
         if (instance == null) {
-            instance = new UserSessionManager();
+            instance = new UserSessionManager(context);
         }
         return instance;
     }
@@ -23,5 +31,14 @@ public class UserSessionManager {
         return currentUser;
     }
 
-    // Other session management methods as necessary, like clear session, etc.
+    public void refreshCurrentUser() {
+        if (currentUser != null) {
+            // Fetch the latest user data from the database
+            User updatedUser = userDao.getUser(currentUser.getId());
+            if (updatedUser != null) {
+                setCurrentUser(updatedUser);
+            }
+        }
+    }
+
 }

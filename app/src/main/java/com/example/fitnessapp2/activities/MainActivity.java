@@ -2,6 +2,7 @@ package com.example.fitnessapp2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,9 +41,6 @@ public class MainActivity extends BaseActivity {
         signUpButton = findViewById(R.id.signUpButton);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
 
-        String email = "";
-        String password = "";
-
         preferenceManager = new PreferenceManager(this);
 
         rememberMeCheckboxState = preferenceManager.getRememberMePreference();
@@ -76,12 +74,13 @@ public class MainActivity extends BaseActivity {
             User user = userDAO.getUserByEmailAndPassword(enteredEmail, enteredPassword);
             if (user != null) {
                 // Login success
-                UserSessionManager.getInstance().setCurrentUser(user);
+                UserSessionManager.getInstance(this).setCurrentUser(user);
 
                 // If remember me is checked, save credentials
                 if (rememberMeCheckbox.isChecked()) {
                     preferenceManager.setEmailPreference(enteredEmail);
                 }
+
                 // GO to main app page
                 Intent intent = new Intent(MainActivity.this, AppMainPageActivity.class);
                 startActivity(intent);

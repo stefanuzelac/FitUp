@@ -9,18 +9,18 @@ import java.util.Locale;
 public class User {
     private int id, height;
     private double weight;
-    private String name, lastName, email, password, phone, dob, gender;
+    private String name, lastName, email, password, phone, gender, dob;
     private byte[] profilePicture;
 
-    public User(int id, String name, String lastName, String email, String password, String phone, String dob, String gender, int height, double weight, byte[] profilePicture) {
+    public User(int id, String name, String lastName, String email, String password, String phone, String gender, String dob, int height, double weight, byte[] profilePicture) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.dob = dob;
         this.gender = gender;
+        this.dob = dob;
         this.height = height;
         this.weight = weight;
         this.profilePicture = profilePicture;
@@ -146,8 +146,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", dob='" + dob + '\'' +
                 ", gender='" + gender + '\'' +
+                ", dob='" + dob + '\'' +
                 ", height=" + height +
                 ", weight=" + weight +
                 // You can decide if you want to print the 'password' field

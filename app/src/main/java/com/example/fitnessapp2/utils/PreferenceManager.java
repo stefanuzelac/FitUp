@@ -35,6 +35,7 @@ public class PreferenceManager {
         editor.apply();
     }
 
+    // Update the clearPreferences method to also clear the password
     public void clearPreferences() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(EMAIL_KEY);

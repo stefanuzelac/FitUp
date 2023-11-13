@@ -35,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp">
+                        app:cardElevation="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -43,12 +43,23 @@
                             android:orientation="vertical"
                             android:padding="16dp">
 
+                            <!-- ImageView for Avatar -->
+                            <ImageView
+                                android:id="@+id/profileAvatar"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="6dp" />
                             <!-- Full Name -->
                             <TextView
                                 android:id="@+id/profileName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:gravity="center"
                                 android:text="Full Name"
+                                android:textColor="@color/secondary"
                                 android:textSize="30sp"
                                 android:textStyle="bold" />
 
@@ -56,6 +67,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:gravity="center"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -72,30 +85,20 @@
                                     android:textSize="16sp" />
                             </LinearLayout>
 
-                            <!-- Email Layout -->
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/profileEmail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:layout_marginBottom="6dp"
+                                android:gravity="center"
+                                android:textSize="16sp" />
 
-                                <TextView
-                                    android:id="@+id/labelProfileEmail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Email: "
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/profileEmail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="16sp" />
-                            </LinearLayout>
 
                             <!-- Phone Number Layout -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:gravity="center"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -116,7 +119,124 @@
                     </androidx.cardview.widget.CardView>
 
                     <!-- Additional CardViews for other sections -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="8dp">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <!-- Height Section -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_height" /> <!-- Height Icon -->
+
+                                <TextView
+                                    android:id="@+id/labelHeight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Height (cm)" />
+
+                                <TextView
+                                    android:id="@+id/currentHeight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="175 cm" /> <!-- Current Height Value -->
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/heightSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="250"
+                                android:progress="175" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <!-- Weight Section -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_weight" /> <!-- Weight Icon -->
+
+                                <TextView
+                                    android:id="@+id/labelWeight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Weight (kg)" />
+
+                                <TextView
+                                    android:id="@+id/currentWeight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="70 kg" /> <!-- Current Weight Value -->
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/weightSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="200"
+                                android:progress="70" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <Button
+                        android:id="@+id/saveChangesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Save Changes" />
+
+                    <!-- Default or current height -->
+
+                    <!-- Weight Slider -->
+
+                    <!-- Default or current weight -->
+
+                    <!-- Save Changes Button -->
                 </LinearLayout>
             </ScrollView>
 

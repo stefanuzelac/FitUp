@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private String dateOfBirth;
     String name, lastName, email, password, phone, dob;
     private UserDAOImpl userDaoImpl;
+    private RadioGroup registerGender;
 
 
     @Override
@@ -45,6 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
         registerEmail = findViewById(R.id.registerEmail);
         registerPassword = findViewById(R.id.registerPassword);
         registerPhone = findViewById(R.id.registerPhone);
+        registerGender = findViewById(R.id.registerGender);
         registerDOB = findViewById(R.id.registerDOB);
         registerConfirm = findViewById(R.id.registerConfirm);
 
@@ -143,16 +146,21 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(RegistrationActivity.this, "Please select your date of birth", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                // Get gender selection
+                int selectedGenderId = registerGender.getCheckedRadioButtonId();
+                String gender = "";
+                if (selectedGenderId == R.id.genderMale) {
+                    gender = "male";
+                } else if (selectedGenderId == R.id.genderFemale) {
+                    gender = "female";
+                }
                 // if all fields are valid, add the user data to the database using DAO
-                boolean isInserted = userDaoImpl.addUser(new User(0, name, lastName, email, password, phone, dob, null, 0, 0, null)); // default values for unprovided fields
+                boolean isInserted = userDaoImpl.addUser(new User(0, name, lastName, email, password, phone, gender, dob, 0, 0, null)); // Now correctly passing dob and gender
 
                 if (isInserted) {
                     // show a toast message indicating that the registration was successful
                     Toast.makeText(RegistrationActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-
-                    // Optionally retrieve the inserted user data using the DAO if needed
-                    // User insertedUser = userDaoImpl.getUserByEmail(email);
-                    // Log.d("Registered User", "Name: " + insertedUser.getName() + ", Email: " + insertedUser.getEmail());
 
                     // start MainActivity
                     Intent mainIntent = new Intent(RegistrationActivity.this, MainActivity.class);

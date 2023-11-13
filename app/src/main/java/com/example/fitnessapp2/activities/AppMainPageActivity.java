@@ -20,7 +20,7 @@ public class AppMainPageActivity extends BaseActivity {
         setupToolbarAndDrawer();
 
         // Get the currentUser from UserSessionManager
-        User currentUser = UserSessionManager.getInstance().getCurrentUser();
+        User currentUser = UserSessionManager.getInstance(this).getCurrentUser();
         if (currentUser == null) {
             // Handle this case, maybe finish the activity or redirect to login
             finish();

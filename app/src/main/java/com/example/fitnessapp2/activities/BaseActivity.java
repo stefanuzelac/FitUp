@@ -2,6 +2,7 @@ package com.example.fitnessapp2.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +25,23 @@ public class BaseActivity extends AppCompatActivity {
     protected NavigationView navigationView;
     private SharedPreferences sharedPref;
     protected User currentUser;
+    protected  UserSessionManager sessionManager;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        sessionManager = UserSessionManager.getInstance(BaseActivity.this);
+
+    }
+
+    protected void checkSession() {
+        currentUser = sessionManager.getCurrentUser();
+        if (currentUser == null) {
+            logout();
+        }
+    }
 
     protected void setupToolbarAndDrawer() {
         toolbar = findViewById(R.id.toolbar);
@@ -54,7 +72,7 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent intent;
                 // Get the current user from the session manager
-                User currentUser = UserSessionManager.getInstance().getCurrentUser();
+                User currentUser = sessionManager.getCurrentUser();
                 if (currentUser == null) {
                     Toast.makeText(BaseActivity.this, "User not logged in. Please log in again.",
                             Toast.LENGTH_SHORT).show();
@@ -97,21 +115,12 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    protected void checkSession() {
-        currentUser = UserSessionManager.getInstance().getCurrentUser();
-        if (currentUser == null) {
-            logout();
-        }
-    }
-
     // This method is new. It will be called when the activity starts interacting with the user.
     @Override
     protected void onResume() {
         super.onResume();
         checkSession();
-
         updateNavigationHeaderWithUserData();
-
     }
 
     // updates the UI elements in the Navigation Drawer header.
@@ -150,13 +159,12 @@ public class BaseActivity extends AppCompatActivity {
 
     private void logout() {
         // Clear the current user in UserSessionManager
-        UserSessionManager.getInstance().setCurrentUser(null);
+        UserSessionManager.getInstance(this).setCurrentUser(null);
 
         // Clear shared preferences related to login details
         SharedPreferences sharedPref = getSharedPreferences("remember_me_pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove("email");
-        editor.remove("password");
         editor.putBoolean("rememberMeCheckboxState", false);
         editor.apply();
 

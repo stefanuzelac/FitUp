@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class UserDAOImpl implements UserDAO {
         contentValues.put("email", user.getEmail());
         contentValues.put("password", user.getPassword());
         contentValues.put("phone", user.getPhone());
-        contentValues.put("dob", user.getDob());
         contentValues.put("gender", user.getGender());
+        contentValues.put("dob", user.getDob());
         contentValues.put("height", user.getHeight());
         contentValues.put("weight", user.getWeight());
         contentValues.put("profile_picture", user.getProfilePicture());
@@ -41,7 +42,7 @@ public class UserDAOImpl implements UserDAO {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "users",
-                new String[]{"id", "name", "last_name", "email", "password", "phone", "dob", "gender", "height", "weight", "profile_picture"},
+                new String[]{"id", "name", "last_name", "email", "password", "phone", "gender", "dob", "height", "weight", "profile_picture"},
                 "id = ?",
                 new String[]{String.valueOf(id)},
                 null,
@@ -62,8 +63,8 @@ public class UserDAOImpl implements UserDAO {
                         cursor.getString(cursor.getColumnIndexOrThrow("email")),
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
                         cursor.getString(cursor.getColumnIndexOrThrow("phone")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                         cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("height")),
                         cursor.getDouble(cursor.getColumnIndexOrThrow("weight")),
                         cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture")) // profile_picture should be a Blob if it's storing binary data
@@ -81,13 +82,15 @@ public class UserDAOImpl implements UserDAO {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "users",
-                new String[]{"id", "name", "last_name", "email", "password", "phone", "dob", "gender", "height", "weight", "profile_picture"},
+                new String[]{"id", "name", "last_name", "email", "password", "phone", "gender", "dob", "height", "weight", "profile_picture"},
                 "email = ? AND password = ?",
                 new String[]{email, password},
                 null,
                 null,
                 null
+
         );
+        Log.d("UserDAOImpl", "Querying for user with email: " + email + " and password: " + password);
 
         User user = null;
         if (cursor.moveToFirst()) {
@@ -98,8 +101,8 @@ public class UserDAOImpl implements UserDAO {
                     cursor.getString(cursor.getColumnIndexOrThrow("email")),
                     cursor.getString(cursor.getColumnIndexOrThrow("password")),
                     cursor.getString(cursor.getColumnIndexOrThrow("phone")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                     cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                     cursor.getInt(cursor.getColumnIndexOrThrow("height")),
                     cursor.getDouble(cursor.getColumnIndexOrThrow("weight")),
                     cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture")) // Assuming 'profile_picture' is a BLOB
@@ -108,6 +111,8 @@ public class UserDAOImpl implements UserDAO {
         cursor.close();
         db.close();
         return user;
+
+
     }
 
 
@@ -126,8 +131,8 @@ public class UserDAOImpl implements UserDAO {
                         cursor.getString(cursor.getColumnIndexOrThrow("email")),
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
                         cursor.getString(cursor.getColumnIndexOrThrow("phone")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                         cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("dob")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("height")),
                         cursor.getDouble(cursor.getColumnIndexOrThrow("weight")),
                         cursor.getBlob(cursor.getColumnIndexOrThrow("profile_picture")) // Assuming 'profile_picture' is a BLOB
@@ -151,8 +156,8 @@ public class UserDAOImpl implements UserDAO {
         contentValues.put("email", user.getEmail());
         contentValues.put("password", user.getPassword());
         contentValues.put("phone", user.getPhone());
-        contentValues.put("dob", user.getDob());
         contentValues.put("gender", user.getGender());
+        contentValues.put("dob", user.getDob());
         contentValues.put("height", user.getHeight());
         contentValues.put("weight", user.getWeight());
         contentValues.put("profile_picture", user.getProfilePicture());
