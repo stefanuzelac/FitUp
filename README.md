@@ -26,7 +26,7 @@ FitUp is packed with features that cater to various aspects of fitness and healt
 Workout Timing: Plan and track your workout sessions with an integrated timer.
 Exercise Library: Browse through a collection of exercises with detailed tutorials.
 Nutritional Information: Search and log nutritional values to stay on top of your dietary goals.
-Activity Logging: Keep a recor
+Activity Logging: Keep a record of your daily workouts and meals for a comprehensive view of your health progress.
 
 ## Contribution
 While FitUp is currently not open for public contributions, feedback and suggestions are always welcome.
