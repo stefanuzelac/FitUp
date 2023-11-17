@@ -1,16 +1,21 @@
 package com.example.fitnessapp2.activities;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.fitnessapp2.R;
 import com.example.fitnessapp2.data.DatabaseHelper;
 import com.example.fitnessapp2.data.User;
 import com.example.fitnessapp2.data.UserDAOImpl;
+import com.google.android.material.snackbar.Snackbar;
 
 public class AccountActivity extends BaseActivity {
     private TextView profileName, profileAge, profileEmail, profilePhoneNumber, currentHeight, currentWeight;
@@ -21,7 +26,11 @@ public class AccountActivity extends BaseActivity {
     private UserDAOImpl userDao;
     private long lastSaveTime = 0; // Timestamp of the last save
     private final long SAVE_INTERVAL = 30000; // 30 seconds in milliseconds
+    private Snackbar cooldownSnackbar;
+    private Handler snackbarHandler = new Handler();
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +97,7 @@ public class AccountActivity extends BaseActivity {
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - lastSaveTime < SAVE_INTERVAL) {
                     // If the time since the last save is less than the interval, show a message
-                    Toast.makeText(AccountActivity.this, "Please wait before saving again.", Toast.LENGTH_SHORT).show();
+                    showCooldownSnackbar((SAVE_INTERVAL - (currentTime - lastSaveTime)) / 1000);
                 } else {
                     // Update the user data in the database
                     userDao.updateUser(user);
@@ -102,6 +111,38 @@ public class AccountActivity extends BaseActivity {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void showCooldownSnackbar(long remainingSeconds) {
+        if (cooldownSnackbar == null || !cooldownSnackbar.isShownOrQueued()) {
+            cooldownSnackbar = Snackbar.make(findViewById(R.id.content_frame),
+                    "Wait " + remainingSeconds + "s before saving again.", Snackbar.LENGTH_INDEFINITE);
+
+            // Apply the custom style defined in themes.xml
+            cooldownSnackbar.getView().setBackgroundColor(getResources().getColor(R.color.primary, null)); // Use primary color
+            TextView snackbarText = cooldownSnackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            snackbarText.setTextColor(getResources().getColor(R.color.on_primary, null)); // Use on-primary color
+
+            Runnable snackbarRunnable = new Runnable() {
+                long secondsLeft = remainingSeconds;
+
+                @Override
+                public void run() {
+                    if (secondsLeft > 0) {
+                        cooldownSnackbar.setText("Wait " + secondsLeft + "s before saving again.");
+                        secondsLeft--;
+                        snackbarHandler.postDelayed(this, 1000);
+                    } else {
+                        cooldownSnackbar.dismiss();
+                    }
+                }
+            };
+            snackbarHandler.postDelayed(snackbarRunnable, 1000);
+            cooldownSnackbar.show();
+        }
+    }
+
+
 
     @Override
     protected void onResume() {

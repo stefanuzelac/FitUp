@@ -10,7 +10,7 @@
     <color name="on_secondary">#FFFFFF</color> <!-- White Text/Icons on Secondary -->
 
     <!-- Dark Theme Colors -->
-    <color name="primary_dark">#29354a</color> <!-- Darkened Base Greyish-Blue Color -->
+    <color name="primary_dark">#2A3847</color> <!-- Darkened Base Greyish-Blue Color -->
     <color name="primary_variant_dark">#243046</color> <!-- Darkened Slightly Desaturated Greyish-Blue -->
     <color name="secondary_dark">#1c2836</color> <!-- Darkened Further Greyish-Blue -->
     <color name="secondary_variant_dark">#101821</color> <!-- Extremely Dark Desaturated Greyish-Blue Shade -->

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,13 +26,22 @@ public class BaseActivity extends AppCompatActivity {
     protected NavigationView navigationView;
     private SharedPreferences sharedPref;
     protected User currentUser;
-    protected  UserSessionManager sessionManager;
+    protected UserSessionManager sessionManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // Apply the theme change here, before super.onCreate()
+        SharedPreferences sharedPref = getSharedPreferences("app_settings", MODE_PRIVATE);
+        boolean isDarkTheme = sharedPref.getBoolean("dark_theme", false);
 
+        if (isDarkTheme) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        super.onCreate(savedInstanceState);
         sessionManager = UserSessionManager.getInstance(BaseActivity.this);
 
     }

@@ -59,7 +59,7 @@
                                 android:layout_marginBottom="6dp"
                                 android:gravity="center"
                                 android:text="Full Name"
-                                android:textColor="@color/secondary"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="30sp"
                                 android:textStyle="bold" />
 
@@ -228,15 +228,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Save Changes" />
+                        android:text="Save" />
 
-                    <!-- Default or current height -->
-
-                    <!-- Weight Slider -->
-
-                    <!-- Default or current weight -->
-
-                    <!-- Save Changes Button -->
                 </LinearLayout>
             </ScrollView>
 

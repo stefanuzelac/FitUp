@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="BaseTheme.FitnessApp2" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="BaseTheme.FitnessApp2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/exo2_font_family</item>
     </style>
 
@@ -19,11 +19,6 @@
     <style name="Theme.FitnessApp2.NoActionBar" parent="Theme.FitnessApp2">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimaryDark">@color/primary_variant</item>
-        <item name="colorAccent">@color/secondary</item>
-        <item name="android:windowBackground">@color/background</item>
-        <item name="background">@color/background</item>
-        <item name="backgroundColor">@color/background</item>
     </style>
 
     <style name="CustomNumberPickerStyle">
@@ -31,4 +26,8 @@
         <item name="android:textColor">@color/secondary</item>
     </style>
 
+    <style name="CoolSnackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@color/on_primary</item>
+    </style>
 </resources>

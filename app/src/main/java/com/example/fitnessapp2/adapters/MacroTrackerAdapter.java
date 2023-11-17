@@ -50,7 +50,7 @@ public class MacroTrackerAdapter extends RecyclerView.Adapter<MacroTrackerAdapte
     @Override
     public MacroTrackerAdapter.MealLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mealContext);
-        View view = inflater.inflate(R.layout.meal_log_item, parent, false);
+        View view = inflater.inflate(R.layout.item_meal_log, parent, false);
         return new MealLogViewHolder(view);
     }
 
