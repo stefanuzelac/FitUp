@@ -10,6 +10,10 @@
         <item name="colorSecondaryVariant">@color/secondary_variant_dark</item>
         <item name="colorOnSecondary">@color/on_secondary_dark</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="colorPrimaryLighter">@color/primary_lighter_dark</item>
+        <item name="colorSecondaryLighter">@color/secondary_lighter_dark</item>
+        <item name="colorSecondaryVariantLighter">@color/secondary_variant_lighter_dark</item>
+
     </style>
 
     <style name="Theme.FitnessApp2.Dark.NoActionBar" parent="Theme.FitnessApp2.Dark">

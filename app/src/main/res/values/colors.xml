@@ -8,6 +8,10 @@
     <color name="background">#F9F9F9</color> <!-- Off-White -->
     <color name="on_primary">#FFFFFF</color> <!-- White Text/Icons on Primary -->
     <color name="on_secondary">#FFFFFF</color> <!-- White Text/Icons on Secondary -->
+    <color name="primary_lighter">#5F6F7F</color>
+    <color name="secondary_lighter">#485664</color>
+    <color name="secondary_variant_lighter">#39454B</color>
+
 
     <!-- Dark Theme Colors -->
     <color name="primary_dark">#2A3847</color> <!-- Darkened Base Greyish-Blue Color -->
@@ -17,4 +21,7 @@
     <color name="background_dark">#181818</color> <!-- Darker Deep Gray -->
     <color name="on_primary_dark">#FFFFFF</color> <!-- White Text/Icons on Primary Dark -->
     <color name="on_secondary_dark">#FFFFFF</color> <!-- White Text/Icons on Secondary Dark -->
+    <color name="primary_lighter_dark">#4A5565</color> <!-- Lighter Shade of Darkened Base Greyish-Blue Color -->
+    <color name="secondary_lighter_dark">#344954</color> <!-- Lighter Shade of Darkened Further Greyish-Blue -->
+    <color name="secondary_variant_lighter_dark">#2B3643</color> <!-- Lighter Shade of Extremely Dark Desaturated Greyish-Blue Shade -->
 </resources>

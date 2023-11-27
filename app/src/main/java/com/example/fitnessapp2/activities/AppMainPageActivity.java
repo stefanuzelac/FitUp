@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.cardview.widget.CardView;
+
 import com.example.fitnessapp2.R;
 import com.example.fitnessapp2.data.User;
 import com.example.fitnessapp2.utils.UserSessionManager;
-import com.google.android.material.button.MaterialButton;
 
 public class AppMainPageActivity extends BaseActivity {
     //declaring my buttons
-    private MaterialButton workoutTimerButton, exercisesButton, nutritionButton;
+    private CardView cardWorkoutTimerButton, cardExercisesButton, cardNutritionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,29 +29,14 @@ public class AppMainPageActivity extends BaseActivity {
         }
 
         //find the workout timer button in the layout file and add a listener to open the workout timer activity
-        workoutTimerButton = findViewById(R.id.workout_timer_button);
-        workoutTimerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onWorkoutTimerButtonClick(workoutTimerButton);
-            }
-        });
+        cardWorkoutTimerButton = findViewById(R.id.card_workout_timer_button);
+        cardWorkoutTimerButton.setOnClickListener(v -> onWorkoutTimerButtonClick(cardWorkoutTimerButton));
 
-        exercisesButton = findViewById(R.id.exercises_button);
-        exercisesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onExercisesButtonClick(exercisesButton);
-            }
-        });
+        cardExercisesButton = findViewById(R.id.card_exercises_button);
+        cardExercisesButton.setOnClickListener(v -> onExercisesButtonClick(cardExercisesButton));
 
-        nutritionButton = findViewById(R.id.nutrition_button);
-        nutritionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNutritionButtonClick(nutritionButton);
-            }
-        });
+        cardNutritionButton = findViewById(R.id.card_nutrition_button);
+        cardNutritionButton.setOnClickListener(v -> onNutritionButtonClick(cardNutritionButton));
 
     }
 
