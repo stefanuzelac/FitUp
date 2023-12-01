@@ -11,14 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/primary"
+        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:title="@string/app_name" />
+        app:title="@string/app_name"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
     <!-- Bottom border -->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/secondary_variant" />
+        android:background="?attr/colorSecondaryVariant" />
 </LinearLayout>

@@ -55,8 +55,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setupToolbarAndDrawer() {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.primary));
-        toolbar.setTitleTextColor(getResources().getColor(R.color.on_primary));
+        /* toolbar.setBackgroundColor(getResources().getColor(R.color.primary));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.on_primary));*/
         drawer = findViewById(R.id.drawer_layout);
 
         sharedPref = getSharedPreferences("app_pref", MODE_PRIVATE);

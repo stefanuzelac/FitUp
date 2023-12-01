@@ -14,15 +14,14 @@ import com.example.fitnessapp2.R;
 
 public class WeightliftingFragment extends Fragment {
 
-    private EditText setsInput;
-    private EditText repsInput;
-    private EditText weightInput;
+    private EditText nameInput, setsInput, repsInput, weightInput;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weightlifting, container, false);
 
+        nameInput = view.findViewById(R.id.weightlifting_name_input);
         setsInput = view.findViewById(R.id.weightlifting_sets_input);
         repsInput = view.findViewById(R.id.weightlifting_reps_input);
         weightInput = view.findViewById(R.id.weightlifting_weight_input);
@@ -33,6 +32,10 @@ public class WeightliftingFragment extends Fragment {
     }
 
     // Include methods to retrieve user input data from the fragment
+    public String getName() {
+        return nameInput.getText().toString();
+    }
+
     public int getSets() {
         return Integer.parseInt(setsInput.getText().toString());
     }
