@@ -12,9 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.DatabaseHelper;
-import com.example.fitnessapp2.data.User;
-import com.example.fitnessapp2.data.UserDAOImpl;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
+import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.database.daoimpl.UserDAOImpl;
 import com.google.android.material.snackbar.Snackbar;
 
 public class AccountActivity extends BaseActivity {

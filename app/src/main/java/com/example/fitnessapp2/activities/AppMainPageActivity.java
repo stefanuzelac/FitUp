@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.cardview.widget.CardView;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.User;
+import com.example.fitnessapp2.data.model.User;
 import com.example.fitnessapp2.utils.UserSessionManager;
 
 public class AppMainPageActivity extends BaseActivity {

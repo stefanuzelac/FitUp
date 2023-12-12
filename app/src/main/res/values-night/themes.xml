@@ -31,4 +31,9 @@
         <item name="android:background">@color/primary_dark</item>
         <item name="android:textColor">@color/on_primary_dark</item>
     </style>
+
+    <style name="CustomCalendarViewStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="fontFamily">@font/exo2_font_family</item>
+    </style>
+
 </resources>

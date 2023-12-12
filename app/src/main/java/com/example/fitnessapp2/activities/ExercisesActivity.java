@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitnessapp2.data.Exercise;
+import com.example.fitnessapp2.data.model.Exercise;
 import com.example.fitnessapp2.api.ExerciseApi;
 import com.example.fitnessapp2.api.ExerciseApiImpl;
 import com.example.fitnessapp2.adapters.ExerciseCallback;

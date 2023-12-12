@@ -1,10 +1,14 @@
-package com.example.fitnessapp2.data;
+package com.example.fitnessapp2.data.database.daoimpl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
+import com.example.fitnessapp2.data.database.dao.UserDAO;
 
 import java.util.ArrayList;
 import java.util.List;

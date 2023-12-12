@@ -10,13 +10,13 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitnessapp2.data.DatabaseHelper;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
 import com.example.fitnessapp2.adapters.MacroTrackerAdapter;
-import com.example.fitnessapp2.data.MealDAO;
-import com.example.fitnessapp2.data.MealDAOImpl;
-import com.example.fitnessapp2.data.MealLog;
+import com.example.fitnessapp2.data.database.dao.MealDAO;
+import com.example.fitnessapp2.data.database.daoimpl.MealDAOImpl;
+import com.example.fitnessapp2.data.model.MealLog;
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.User;
+import com.example.fitnessapp2.data.model.User;
 import com.example.fitnessapp2.utils.UserSessionManager;
 
 import java.text.SimpleDateFormat;

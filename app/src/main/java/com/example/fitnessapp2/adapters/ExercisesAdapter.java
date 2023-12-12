@@ -12,7 +12,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitnessapp2.data.Exercise;
+import com.example.fitnessapp2.data.model.Exercise;
 import com.example.fitnessapp2.api.ExerciseVideoUtility;
 import com.example.fitnessapp2.R;
 

@@ -2,9 +2,9 @@ package com.example.fitnessapp2.utils;
 
 import android.content.Context;
 
-import com.example.fitnessapp2.data.DatabaseHelper;
-import com.example.fitnessapp2.data.User;
-import com.example.fitnessapp2.data.UserDAOImpl;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
+import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.database.daoimpl.UserDAOImpl;
 
 public class UserSessionManager {
     private static UserSessionManager instance = null;

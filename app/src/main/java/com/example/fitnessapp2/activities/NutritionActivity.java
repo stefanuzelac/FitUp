@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitnessapp2.data.Food;
+import com.example.fitnessapp2.data.model.Food;
 import com.example.fitnessapp2.adapters.NutritionAdapter;
 import com.example.fitnessapp2.api.NutritionApi;
 import com.example.fitnessapp2.api.NutritionApiImpl;

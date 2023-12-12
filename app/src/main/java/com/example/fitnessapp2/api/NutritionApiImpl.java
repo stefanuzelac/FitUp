@@ -2,7 +2,7 @@ package com.example.fitnessapp2.api;
 
 import android.util.Log;
 
-import com.example.fitnessapp2.data.Food;
+import com.example.fitnessapp2.data.model.Food;
 import com.example.fitnessapp2.adapters.NutritionCallback;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

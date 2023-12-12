@@ -1,4 +1,4 @@
-package com.example.fitnessapp2.data;
+package com.example.fitnessapp2.data.model;
 
 //nutrition object
 public class Food {

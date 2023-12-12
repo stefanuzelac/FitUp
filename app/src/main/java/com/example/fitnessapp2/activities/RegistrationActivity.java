@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fitnessapp2.data.DatabaseHelper;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.User;
-import com.example.fitnessapp2.data.UserDAOImpl;
+import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.database.daoimpl.UserDAOImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

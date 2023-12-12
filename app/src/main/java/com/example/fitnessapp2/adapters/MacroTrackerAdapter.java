@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitnessapp2.data.MealLog;
+import com.example.fitnessapp2.data.model.MealLog;
 import com.example.fitnessapp2.R;
 
 import java.util.List;

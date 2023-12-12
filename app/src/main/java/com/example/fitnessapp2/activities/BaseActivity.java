@@ -16,7 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.User;
+import com.example.fitnessapp2.data.model.User;
 import com.example.fitnessapp2.utils.UserSessionManager;
 import com.google.android.material.navigation.NavigationView;
 

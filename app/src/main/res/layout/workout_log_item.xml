@@ -19,22 +19,9 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/exercise_text_view"
+            android:id="@+id/workout_detail_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/sets_reps_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/weight_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
     </LinearLayout>
 </FrameLayout>

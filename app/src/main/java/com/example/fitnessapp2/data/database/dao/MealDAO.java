@@ -1,4 +1,6 @@
-package com.example.fitnessapp2.data;
+package com.example.fitnessapp2.data.database.dao;
+
+        import com.example.fitnessapp2.data.model.MealLog;
 
         import java.util.List;
 

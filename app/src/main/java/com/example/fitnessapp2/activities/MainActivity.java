@@ -2,18 +2,17 @@ package com.example.fitnessapp2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fitnessapp2.data.DatabaseHelper;
+import com.example.fitnessapp2.data.database.DatabaseHelper;
 import com.example.fitnessapp2.utils.PreferenceManager;
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.User;
-import com.example.fitnessapp2.data.UserDAO;
-import com.example.fitnessapp2.data.UserDAOImpl;
+import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.database.dao.UserDAO;
+import com.example.fitnessapp2.data.database.daoimpl.UserDAOImpl;
 import com.example.fitnessapp2.utils.UserSessionManager;
 
 public class MainActivity extends BaseActivity {

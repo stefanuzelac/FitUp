@@ -1,6 +1,6 @@
 package com.example.fitnessapp2.adapters;
 
-import com.example.fitnessapp2.data.Food;
+import com.example.fitnessapp2.data.model.Food;
 
 import java.util.List;
 

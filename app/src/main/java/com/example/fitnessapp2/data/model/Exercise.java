@@ -1,4 +1,4 @@
-package com.example.fitnessapp2.data;
+package com.example.fitnessapp2.data.model;
 
 public class Exercise {
     private String name, type, muscle, equipment, difficulty, instructions;
