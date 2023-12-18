@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.WorkoutDataPass;
 import com.example.fitnessapp2.data.model.WorkoutLog;
 
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 public class RunningFragment extends Fragment {
     private EditText distanceInput, timeInput;
-    private WorkoutDataPass dataPasser;
     private int userId;
     private String currentDate;
 
@@ -52,8 +50,11 @@ public class RunningFragment extends Fragment {
 
     public Map<String, Object> getWorkoutDetails() {
         Map<String, Object> details = new HashMap<>();
-        details.put("distance", Double.parseDouble(distanceInput.getText().toString()));
-        details.put("time", timeInput.getText().toString());
+        double distance = distanceInput.getText().toString().isEmpty() ? 0.0 : Double.parseDouble(distanceInput.getText().toString());
+        String time = timeInput.getText().toString().isEmpty() ? "0" : timeInput.getText().toString();
+
+        details.put("distance", distance);
+        details.put("time", time);
         return details;
     }
 
@@ -65,14 +66,6 @@ public class RunningFragment extends Fragment {
         this.currentDate = date;
     }
 
-    public void passDataToActivity() {
-        if (dataPasser != null) {
-            WorkoutLog workoutLog = new WorkoutLog(0, userId, "Running", currentDate, getWorkoutDetails());
-            dataPasser.OnWorkoutDataPass(workoutLog);
-        }
-    }
-
-    // Existing methods to retrieve user input data
     public double getDistance() {
         return Double.parseDouble(distanceInput.getText().toString());
     }

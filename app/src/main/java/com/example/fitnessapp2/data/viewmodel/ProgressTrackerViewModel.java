@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ProgressTrackerViewModel extends ViewModel {
     private final MutableLiveData<List<WorkoutLog>> workoutLogs = new MutableLiveData<>();
+    private final MutableLiveData<WorkoutLog> newWorkoutLog = new MutableLiveData<>();
     private String selectedDate;
     private final WorkoutDAO workoutDAO;
     private int userId;
@@ -49,5 +50,19 @@ public class ProgressTrackerViewModel extends ViewModel {
                 // Handle the error appropriately
             }
         }).start();
+    }
+
+    public void addNewWorkoutLog(WorkoutLog log) {
+        new Thread(() -> {
+            boolean insertResult = workoutDAO.insertWorkoutLog(log);
+            if (insertResult) {
+                // If insert is successful, reload logs to update LiveData
+                loadWorkoutLogs();
+            }
+        }).start();
+    }
+
+    public LiveData<WorkoutLog> getNewWorkoutLog() {
+        return newWorkoutLog;
     }
 }

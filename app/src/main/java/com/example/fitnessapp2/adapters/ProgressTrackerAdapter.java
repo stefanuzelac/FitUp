@@ -95,12 +95,6 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
         }
     }
 
-    // Method to add a WorkoutLog
-    public void addWorkoutLog(WorkoutLog workoutLog) {
-        workoutLogs.add(workoutLog);
-        notifyItemInserted(workoutLogs.size() - 1);
-    }
-
     // Method to remove a WorkoutLog at a specific position
     public void removeWorkoutLogAtPosition(int position) {
         if (position >= 0 && position < workoutLogs.size()) {
@@ -109,27 +103,10 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
         }
     }
 
-    // Method to update a WorkoutLog at a specific position
-    public void updateWorkoutLogAtPosition(int position, WorkoutLog workoutLog) {
-        if (position >= 0 && position < workoutLogs.size()) {
-            workoutLogs.set(position, workoutLog);
-            notifyItemChanged(position);
-        }
-    }
-
-    // Method to get a WorkoutLog at a specific position
-    public WorkoutLog getWorkoutLogAtPosition(int position) {
-        if (position >= 0 && position < workoutLogs.size()) {
-            return workoutLogs.get(position);
-        }
-        return null;
-    }
-
-    //interface for making items clickable
+    // Interface for making items clickable
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
-
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
@@ -141,5 +118,4 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
         workoutLogs.addAll(newWorkoutLogs);
         notifyDataSetChanged();
     }
-
 }

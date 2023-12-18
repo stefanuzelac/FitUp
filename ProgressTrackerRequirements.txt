@@ -1,0 +1,25 @@
+To connect all the pieces of your Progress Tracker Activity, ensuring that the user can select a workout type, save it, and then view saved workouts by date in the RecyclerView, you'll need to follow these steps:
+
+Implement a Unified Workout Data Model:
+Since your workouts have different types of information, you'll need a unified data model to represent all workout types in a generalized form. This model can have fields common to all workouts (like date, type, and a description) and specific fields for each workout type.
+
+Modify WorkoutLog Class:
+Update your WorkoutLog class to reflect this unified model. It should contain fields to store common data for all workout types and additional fields specific to each workout type.
+
+Update Database Operations:
+Modify your WorkoutDAO and WorkoutDAOImpl to handle this unified WorkoutLog model. This includes creating, reading, updating, and deleting operations for different workout types.
+
+Fragment Communication with Activity:
+In your fragments (CyclingFragment, RunningFragment, etc.), when the user saves a workout, send the data back to the ProgressTrackerActivity. You can use interfaces or ViewModel for this communication.
+
+Handling Save in Activity:
+In ProgressTrackerActivity, implement the method to receive data from fragments and save it using WorkoutDAO.
+
+Load Workouts Based on Selected Date:
+When a user selects a date in the calendar, fetch the workouts for that date from the database using WorkoutDAO and update the RecyclerView.
+
+Modify ProgressTrackerAdapter:
+Update ProgressTrackerAdapter to handle the unified WorkoutLog model. This involves modifying how each item is bound in onBindViewHolder to display relevant information based on the workout type.
+
+Modify workout_log_item.xml:
+Update the layout to accommodate different types of information. You might consider using a ConstraintLayout for more flexibility.

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.WorkoutDataPass;
 import com.example.fitnessapp2.data.model.WorkoutLog;
 
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 public class SwimmingFragment extends Fragment {
     private EditText lapCountInput, poolSizeInput, swimTimeInput;
-    private WorkoutDataPass dataPasser;
     private int userId;
     private String currentDate;
 
@@ -51,16 +49,18 @@ public class SwimmingFragment extends Fragment {
         return view;
     }
 
-    // Method to collect workout details
     public Map<String, Object> getWorkoutDetails() {
         Map<String, Object> details = new HashMap<>();
-        details.put("lapCount", Integer.parseInt(lapCountInput.getText().toString()));
-        details.put("poolSize", Float.parseFloat(poolSizeInput.getText().toString()));
-        details.put("swimTime", swimTimeInput.getText().toString());
+        int lapCount = lapCountInput.getText().toString().isEmpty() ? 0 : Integer.parseInt(lapCountInput.getText().toString());
+        float poolSize = poolSizeInput.getText().toString().isEmpty() ? 0f : Float.parseFloat(poolSizeInput.getText().toString());
+        String swimTime = swimTimeInput.getText().toString().isEmpty() ? "0" : swimTimeInput.getText().toString();
+
+        details.put("lapCount", lapCount);
+        details.put("poolSize", poolSize);
+        details.put("swimTime", swimTime);
         return details;
     }
 
-    // Methods to set userId and currentDate
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -69,15 +69,6 @@ public class SwimmingFragment extends Fragment {
         this.currentDate = date;
     }
 
-    // Method to pass data to activity
-    public void passDataToActivity() {
-        if (dataPasser != null) {
-            WorkoutLog workoutLog = new WorkoutLog(0, userId, "Swimming", currentDate, getWorkoutDetails());
-            dataPasser.OnWorkoutDataPass(workoutLog);
-        }
-    }
-
-    // Methods to retrieve user input data
     public int getLapCount() {
         return Integer.parseInt(lapCountInput.getText().toString());
     }

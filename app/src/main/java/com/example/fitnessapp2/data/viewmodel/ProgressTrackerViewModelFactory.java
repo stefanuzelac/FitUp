@@ -23,4 +23,3 @@ public class ProgressTrackerViewModelFactory implements ViewModelProvider.Factor
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }
-

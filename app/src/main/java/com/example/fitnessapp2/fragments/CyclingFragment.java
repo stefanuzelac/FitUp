@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.WorkoutDataPass;
 import com.example.fitnessapp2.data.model.WorkoutLog;
 
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import java.util.Map;
 
 public class CyclingFragment extends Fragment {
     private EditText routeInput, durationInput, averageSpeedInput;
-    private WorkoutDataPass dataPasser;
     private int userId;
     private String currentDate;
 
@@ -52,13 +50,16 @@ public class CyclingFragment extends Fragment {
 
     public Map<String, Object> getWorkoutDetails() {
         Map<String, Object> details = new HashMap<>();
-        details.put("route", routeInput.getText().toString());
-        details.put("duration", durationInput.getText().toString());
-        details.put("averageSpeed", Float.parseFloat(averageSpeedInput.getText().toString()));
+        String route = routeInput.getText().toString().isEmpty() ? "N/A" : routeInput.getText().toString();
+        String duration = durationInput.getText().toString().isEmpty() ? "0" : durationInput.getText().toString();
+        float averageSpeed = averageSpeedInput.getText().toString().isEmpty() ? 0f : Float.parseFloat(averageSpeedInput.getText().toString());
+
+        details.put("route", route);
+        details.put("duration", duration);
+        details.put("averageSpeed", averageSpeed);
         return details;
     }
 
-    // Set the user ID
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -67,14 +68,6 @@ public class CyclingFragment extends Fragment {
         this.currentDate = date;
     }
 
-    public void passDataToActivity() {
-        if (dataPasser != null) {
-            WorkoutLog workoutLog = new WorkoutLog(0, userId, "Cycling", currentDate, getWorkoutDetails());
-            dataPasser.OnWorkoutDataPass(workoutLog);
-        }
-    }
-
-    // Methods to retrieve user input data
     public String getRoute() {
         return routeInput.getText().toString();
     }

@@ -22,7 +22,6 @@ import com.example.fitnessapp2.data.viewmodel.ProgressTrackerViewModelFactory;
 import com.example.fitnessapp2.data.model.User;
 import com.example.fitnessapp2.data.database.dao.WorkoutDAO;
 import com.example.fitnessapp2.data.database.daoimpl.WorkoutDAOImpl;
-import com.example.fitnessapp2.data.WorkoutDataPass;
 import com.example.fitnessapp2.data.model.WorkoutLog;
 import com.example.fitnessapp2.fragments.CyclingFragment;
 import com.example.fitnessapp2.fragments.RunningFragment;
@@ -38,8 +37,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class ProgressTrackerActivity extends BaseActivity implements WorkoutDataPass {
+public class ProgressTrackerActivity extends BaseActivity {
     private RecyclerView workoutLogsRecyclerView;
     private ProgressTrackerAdapter workoutLogsAdapter;
     private int userId;
@@ -55,11 +55,9 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         setContentView(R.layout.activity_progress_tracker);
         setupToolbarAndDrawer();
 
-        // Initialize DatabaseHelper and WorkoutDAO
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         workoutDAO = new WorkoutDAOImpl(databaseHelper);
 
-        // Initialize ViewModel with Factory
         ProgressTrackerViewModelFactory factory = new ProgressTrackerViewModelFactory(workoutDAO);
         viewModel = new ViewModelProvider(this, factory).get(ProgressTrackerViewModel.class);
 
@@ -68,7 +66,6 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         workoutLogsAdapter = new ProgressTrackerAdapter(this, new ArrayList<>());
         workoutLogsRecyclerView.setAdapter(workoutLogsAdapter);
 
-        // Set user ID in ViewModel
         User currentUser = UserSessionManager.getInstance(this).getCurrentUser();
         if (currentUser != null) {
             userId = currentUser.getId(); // Make sure this is the correct user ID
@@ -79,16 +76,8 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
             return;
         }
 
-        // Observe LiveData for workout logs
-        viewModel.getWorkoutLogs().observe(this, logs -> {
-            if (logs != null && !logs.isEmpty()) {
-                workoutLogsAdapter.updateData(logs);
-            } else {
-                // Show message if no logs are available for the selected date
-                Toast.makeText(this, "No logs available for this date.", Toast.LENGTH_SHORT).show();
-                workoutLogsAdapter.updateData(new ArrayList<>()); // Clear existing data
-            }
-        });
+        viewModel.getWorkoutLogs().observe(this, logs -> workoutLogsAdapter.updateData(logs));
+        workoutLogsRecyclerView.setVisibility(View.GONE);
 
         // Initialize MaterialCalendarView and set a Date Selection Listener
         com.prolificinteractive.materialcalendarview.MaterialCalendarView calendarView = findViewById(R.id.calendarView);
@@ -96,6 +85,9 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
             LocalDate localDate = date.getDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             selectedDate = localDate.format(formatter);
+
+            // Make RecyclerView visible when a date is selected
+            workoutLogsRecyclerView.setVisibility(View.VISIBLE);
 
             viewModel.setSelectedDate(selectedDate); // Trigger LiveData update in ViewModel
         });
@@ -106,7 +98,6 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         workoutLogsAdapter.setOnItemClickListener(new ProgressTrackerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.d("ProgressTrackerActivity", "List size: " + workoutLogs.size() + ", Position: " + position);
                 if (position >= 0 && position < workoutLogs.size()) {
                     WorkoutLog clickedLog = workoutLogs.get(position);
 
@@ -129,19 +120,42 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         workoutLogsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         workoutLogsRecyclerView.setAdapter(workoutLogsAdapter);
 
-        // Setup click listeners for workout type selections
         findViewById(R.id.weightlifting_card).setOnClickListener(v -> showWorkoutTypeFragment("Weightlifting"));
         findViewById(R.id.running_card).setOnClickListener(v -> showWorkoutTypeFragment("Running"));
         findViewById(R.id.cycling_card).setOnClickListener(v -> showWorkoutTypeFragment("Cycling"));
         findViewById(R.id.swimming_card).setOnClickListener(v -> showWorkoutTypeFragment("Swimming"));
 
         addWorkoutLogButton = findViewById(R.id.add_workout_log_button);
-        addWorkoutLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
+        addWorkoutLogButton.setOnClickListener(v -> showDatePickerDialog());
+    }
+
+    private void saveCurrentWorkoutData(String selectedWorkoutDate) {
+        if (currentFragment != null) {
+            WorkoutLog workoutLog = new WorkoutLog();
+            workoutLog.setUserId(userId);
+            workoutLog.setDate(selectedWorkoutDate);
+
+            if (currentFragment instanceof WeightliftingFragment) {
+                Map<String, Object> details = ((WeightliftingFragment) currentFragment).getWorkoutDetails();
+                workoutLog.setWorkoutType("Weightlifting");
+                workoutLog.setWorkoutDetails(details);
+            } else if (currentFragment instanceof CyclingFragment) {
+                Map<String, Object> details = ((CyclingFragment) currentFragment).getWorkoutDetails();
+                workoutLog.setWorkoutType("Cycling");
+                workoutLog.setWorkoutDetails(details);
+            } else if (currentFragment instanceof RunningFragment) {
+                Map<String, Object> details = ((RunningFragment) currentFragment).getWorkoutDetails();
+                workoutLog.setWorkoutType("Running");
+                workoutLog.setWorkoutDetails(details);
+            } else if (currentFragment instanceof SwimmingFragment) {
+                Map<String, Object> details = ((SwimmingFragment) currentFragment).getWorkoutDetails();
+                workoutLog.setWorkoutType("Swimming");
+                workoutLog.setWorkoutDetails(details);
             }
-        });
+
+            viewModel.addNewWorkoutLog(workoutLog);
+            Toast.makeText(ProgressTrackerActivity.this, "Workout log saved successfully", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showDatePickerDialog() {
@@ -153,34 +167,12 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year1, monthOfYear, dayOfMonth) -> {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             calendar.set(year1, monthOfYear, dayOfMonth);
-            selectedDate = dateFormat.format(calendar.getTime());
-            Log.d("ProgressTrackerActivity", "Date selected: " + selectedDate);
-
-            saveCurrentWorkoutData();
+            String selectedWorkoutDate = dateFormat.format(calendar.getTime());
+            saveCurrentWorkoutData(selectedWorkoutDate);
         };
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, year, month, day);
         datePickerDialog.show();
-    }
-
-    private String getFragmentType(Fragment fragment) {
-        if (fragment instanceof WeightliftingFragment) {
-            return "Weightlifting";
-        } else if (fragment instanceof CyclingFragment) {
-            return "Cycling";
-        } else if (fragment instanceof RunningFragment) {
-            return "Running";
-        } else if (fragment instanceof SwimmingFragment) {
-            return "Swimming";
-        }
-        return "";
-    }
-
-
-    // A method to update the adapter's data
-    private void updateAdapterData() {
-        List<WorkoutLog> updatedLogs = workoutDAO.getWorkoutLogsByUserId(userId);
-        workoutLogsAdapter.updateData(updatedLogs);
     }
 
     private void showWorkoutTypeFragment(String workoutType) {
@@ -205,60 +197,5 @@ public class ProgressTrackerActivity extends BaseActivity implements WorkoutData
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.workout_specific_input_frame, fragment);
         transaction.commitNow();
-        Log.d("ProgressTrackerActivity", "Fragment shown: " + workoutType + ", Date: " + selectedDate);
-    }
-
-    private void saveCurrentWorkoutData() {
-        if (currentFragment == null || selectedDate == null || selectedDate.isEmpty()) {
-            Toast.makeText(this, "Please select a workout type and date", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        WorkoutLog workoutLog = new WorkoutLog();
-        workoutLog.setUserId(userId);
-        workoutLog.setDate(selectedDate);
-
-        // Logic for each fragment type
-        if (currentFragment instanceof CyclingFragment) {
-            CyclingFragment cyclingFragment = (CyclingFragment) currentFragment;
-            workoutLog.setWorkoutType("Cycling");
-            workoutLog.setWorkoutDetails(cyclingFragment.getWorkoutDetails());
-        } else if (currentFragment instanceof RunningFragment) {
-            RunningFragment runningFragment = (RunningFragment) currentFragment;
-            workoutLog.setWorkoutType("Running");
-            workoutLog.setWorkoutDetails(runningFragment.getWorkoutDetails());
-        } else if (currentFragment instanceof SwimmingFragment) {
-            SwimmingFragment swimmingFragment = (SwimmingFragment) currentFragment;
-            workoutLog.setWorkoutType("Swimming");
-            workoutLog.setWorkoutDetails(swimmingFragment.getWorkoutDetails());
-        } else if (currentFragment instanceof WeightliftingFragment) {
-            WeightliftingFragment weightliftingFragment = (WeightliftingFragment) currentFragment;
-            weightliftingFragment.setCurrentDate(selectedDate); // Update the date in the fragment
-            workoutLog.setWorkoutType("Weightlifting");
-            workoutLog.setWorkoutDetails(weightliftingFragment.getWorkoutDetails());
-        } else {
-            Toast.makeText(this, "Please select a workout type", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Check if workout details are empty
-        if (workoutLog.getWorkoutDetails() == null || workoutLog.getWorkoutDetails().isEmpty()) {
-            Toast.makeText(this, "Please enter workout details", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Pass the complete workout log to be saved
-        OnWorkoutDataPass(workoutLog);
-    }
-
-
-    @Override
-    public void OnWorkoutDataPass(WorkoutLog workoutLog) {
-        if (workoutDAO.insertWorkoutLog(workoutLog)) {
-            Toast.makeText(this, "Workout log saved successfully!", Toast.LENGTH_SHORT).show();
-            updateAdapterData(); // Refresh the RecyclerView with new data
-        } else {
-            Toast.makeText(this, "Error saving workout log.", Toast.LENGTH_SHORT).show();
-        }
     }
 }
