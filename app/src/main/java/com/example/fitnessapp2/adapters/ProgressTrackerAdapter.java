@@ -29,7 +29,7 @@ public class ProgressTrackerAdapter extends RecyclerView.Adapter<ProgressTracker
     @NonNull
     @Override
     public WorkoutLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.workout_log_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_workout_log, parent, false);
         return new WorkoutLogViewHolder(view, mClickListener);
     }
 

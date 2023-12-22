@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessapp2.R;
-import com.example.fitnessapp2.data.model.WorkoutLog;
 
 import java.util.HashMap;
 import java.util.Map;

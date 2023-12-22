@@ -1,12 +1,15 @@
 package com.example.fitnessapp2.activities;
 
 import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +20,15 @@ import com.example.fitnessapp2.data.database.daoimpl.MealDAOImpl;
 import com.example.fitnessapp2.data.model.MealLog;
 import com.example.fitnessapp2.R;
 import com.example.fitnessapp2.data.model.User;
+import com.example.fitnessapp2.data.viewmodel.MealLogViewModel;
+import com.example.fitnessapp2.fragments.MealLogBottomSheetFragment;
 import com.example.fitnessapp2.utils.UserSessionManager;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +39,9 @@ public class MacroTrackerActivity extends BaseActivity {
     private MealDAO mealDAO;
     private int userId;
     private Button addMealLogButton;
+    private MaterialCalendarView calendarView;
+    private MealLogViewModel mealLogViewModel;
+    private org.threeten.bp.LocalDate selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,60 +59,34 @@ public class MacroTrackerActivity extends BaseActivity {
         userId = currentUser.getId(); // Assuming you have a getId method in the User model
 
         mealLogsRecyclerView = findViewById(R.id.meal_logs_recycler_view);
+        mealLogsRecyclerView.setVisibility(View.GONE);
 
-        // Fetching meal logs as a List instead of Cursor
         mealDAO = new MealDAOImpl(new DatabaseHelper(this));
-
-        List<MealLog> mealLogs = mealDAO.getMealLogsByUserId(userId); // Make sure you have this method in your DAO
-        mealLogsAdapter = new MacroTrackerAdapter(this, mealLogs);
+        mealLogsAdapter = new MacroTrackerAdapter(this, new ArrayList<>());
         mealLogsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mealLogsRecyclerView.setAdapter(mealLogsAdapter);
 
+        mealLogViewModel = new ViewModelProvider(this).get(MealLogViewModel.class);
+        mealLogViewModel.getMealLog().observe(this, mealLog -> {
+            if (mealDAO.insertMealLog(mealLog)) {
+                // Convert the selectedDate (org.threeten.bp.LocalDate) to String for comparison
+                String selectedDateString = (selectedDate != null) ? selectedDate.format(org.threeten.bp.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
+
+                if (selectedDateString != null && selectedDateString.equals(mealLog.getDate())) {
+                    // If the new log's date matches the selected date, update the RecyclerView
+                    updateMealLogsForDate(selectedDate);
+                }
+                Toast.makeText(this, "Meal log added successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Failed to add meal log. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         addMealLogButton = findViewById(R.id.add_meal_log_button);
-        addMealLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText mealInput = findViewById(R.id.meal_input);
-                EditText fatsInput = findViewById(R.id.fats_input);
-                EditText carbsInput = findViewById(R.id.carbs_input);
-                EditText proteinInput = findViewById(R.id.protein_input);
-
-                String meal = mealInput.getText().toString();
-                String fatsStr = fatsInput.getText().toString();
-                String carbsStr = carbsInput.getText().toString();
-                String proteinStr = proteinInput.getText().toString();
-
-                // Check if any field is empty
-                if (meal.isEmpty() || fatsStr.isEmpty() || carbsStr.isEmpty() || proteinStr.isEmpty()) {
-                    Toast.makeText(MacroTrackerActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                double fats = Double.parseDouble(fatsStr);
-                double carbs = Double.parseDouble(carbsStr);
-                double protein = Double.parseDouble(proteinStr);
-
-                String date = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault()).format(new Date());
-
-                MealLog mealLog = new MealLog(-1, userId, meal, fats, carbs, protein, date); // -1 for ID as it will be auto-generated
-
-                if (mealDAO.insertMealLog(mealLog)) {
-                    // Update RecyclerView with new data
-                    List<MealLog> newMealLogs = mealDAO.getMealLogsByUserId(userId);
-                    mealLogsAdapter.updateData(newMealLogs);
-
-                    //clearing input fields
-                    mealInput.setText("");
-                    fatsInput.setText("");
-                    carbsInput.setText("");
-                    proteinInput.setText("");
-
-                    Toast.makeText(MacroTrackerActivity.this, "Meal log added successfully!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MacroTrackerActivity.this, "Failed to add meal log. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            }
+        addMealLogButton.setOnClickListener(view -> {
+            MealLogBottomSheetFragment bottomSheet = MealLogBottomSheetFragment.newInstance(userId);
+            bottomSheet.show(getSupportFragmentManager(), "MealLogBottomSheet");
         });
 
         mealLogsAdapter.setOnItemClickListener(new MacroTrackerAdapter.OnItemClickListener() {
@@ -126,5 +112,25 @@ public class MacroTrackerActivity extends BaseActivity {
                 }
             }
         });
+
+        calendarView = findViewById(R.id.calendarView);
+        calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            if (selected) {
+                selectedDate = org.threeten.bp.LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
+                updateMealLogsForDate(selectedDate);
+                mealLogsRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                selectedDate = null;
+                mealLogsRecyclerView.setVisibility(View.GONE);
+                mealLogsAdapter.updateData(new ArrayList<>());
+            }
+        });
+    }
+
+    private void updateMealLogsForDate(org.threeten.bp.LocalDate date) {
+        org.threeten.bp.format.DateTimeFormatter formatter = org.threeten.bp.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = date.format(formatter);
+        List<MealLog> mealLogsForDate = mealDAO.getMealLogsByUserIdAndDate(userId, formattedDate);
+        mealLogsAdapter.updateData(mealLogsForDate);
     }
 }

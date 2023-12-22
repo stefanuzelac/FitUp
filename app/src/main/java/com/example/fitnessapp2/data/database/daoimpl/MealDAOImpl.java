@@ -96,6 +96,40 @@ public class MealDAOImpl implements MealDAO {
         return logs;
     }
 
+    @Override
+    public List<MealLog> getMealLogsByUserIdAndDate(int userId, String date) {
+        List<MealLog> logs = new ArrayList<>();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM meal_logs WHERE user_id = ? AND date = ?", new String[]{String.valueOf(userId), date});
+
+        int idIndex = cursor.getColumnIndex("id");
+        int userIdIndex = cursor.getColumnIndex("user_id");
+        int mealIndex = cursor.getColumnIndex("meal");
+        int fatsIndex = cursor.getColumnIndex("fats");
+        int carbsIndex = cursor.getColumnIndex("carbs");
+        int proteinIndex = cursor.getColumnIndex("protein");
+        int dateIndex = cursor.getColumnIndex("date");
+
+        if (cursor.moveToFirst()) {
+            do {
+                MealLog log = new MealLog(
+                        cursor.getInt(idIndex),
+                        cursor.getInt(userIdIndex),
+                        cursor.getString(mealIndex),
+                        cursor.getDouble(fatsIndex),
+                        cursor.getDouble(carbsIndex),
+                        cursor.getDouble(proteinIndex),
+                        cursor.getString(dateIndex)
+                );
+                logs.add(log);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return logs;
+    }
+
 
     // Method to update a meal log in the database
     @Override

@@ -13,6 +13,7 @@ import com.example.fitnessapp2.data.model.MealLog;
 import com.example.fitnessapp2.R;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MacroTrackerAdapter extends RecyclerView.Adapter<MacroTrackerAdapter.MealLogViewHolder> {
     private List<MealLog> mealLogs;
@@ -60,10 +61,13 @@ public class MacroTrackerAdapter extends RecyclerView.Adapter<MacroTrackerAdapte
 
         holder.dateTextView.setText(mealLog.getDate());
         holder.mealTextView.setText(mealLog.getMeal());
-        holder.fatsTextView.setText(String.valueOf(mealLog.getFats()) + " g");
-        holder.carbsTextView.setText(String.valueOf(mealLog.getCarbs()) + " g");
-        holder.proteinTextView.setText(String.valueOf(mealLog.getProtein()) + " g");
+
+        // Update the text to include labels
+        holder.fatsTextView.setText("Fats: " + String.format(Locale.getDefault(), "%.2f g", mealLog.getFats()));
+        holder.carbsTextView.setText("Carbs: " + String.format(Locale.getDefault(), "%.2f g", mealLog.getCarbs()));
+        holder.proteinTextView.setText("Protein: " + String.format(Locale.getDefault(), "%.2f g", mealLog.getProtein()));
     }
+
 
 
     @Override

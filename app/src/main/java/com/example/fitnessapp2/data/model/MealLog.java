@@ -1,13 +1,9 @@
 package com.example.fitnessapp2.data.model;
 
 public class MealLog {
-    private int id;
-    private int userId;
-    private String meal;
-    private double fats;
-    private double carbs;
-    private double protein;
-    private String date;
+    private int id, userId;
+    private String meal, date;
+    private double fats, carbs, protein;
 
     public MealLog(int id, int userId, String meal, double fats, double carbs, double protein, String date) {
         this.id = id;
