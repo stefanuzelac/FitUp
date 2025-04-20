@@ -12,6 +12,7 @@ Include icons or images to visually represent the type of meal (breakfast, lunch
 Enhanced Navigation:
 
 Implement a tab layout or a segmented control for easy navigation between 'Add Meal' and 'View Meal History'.
+
 Functional Improvements:
 Date-wise Filtering:
 

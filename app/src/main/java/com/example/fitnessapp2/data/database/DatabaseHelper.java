@@ -26,6 +26,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Creating meal_logs table
         db.execSQL("CREATE TABLE meal_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, meal TEXT, fats DOUBLE, carbs DOUBLE, protein DOUBLE, date TEXT, FOREIGN KEY(user_id) REFERENCES users(id))");
+
+        // Creating new table for exercises
+        String CREATE_EXERCISES_TABLE = "CREATE TABLE exercises (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "type TEXT," +
+                "muscle TEXT," +
+                "equipment TEXT," +
+                "difficulty TEXT," +
+                "instructions TEXT)";
+        db.execSQL(CREATE_EXERCISES_TABLE);
     }
 
     // The onUpgrade method is not necessary at this stage of development

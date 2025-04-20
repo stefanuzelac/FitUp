@@ -1,5 +1,6 @@
 package com.example.fitnessapp2.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,6 +11,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitnessapp2.data.database.dao.ExerciseDAO;
+import com.example.fitnessapp2.data.database.daoimpl.ExerciseDAOImpl;
 import com.example.fitnessapp2.data.model.Exercise;
 import com.example.fitnessapp2.api.ExerciseApi;
 import com.example.fitnessapp2.api.ExerciseApiImpl;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExercisesActivity extends BaseActivity implements ExerciseCallback {
+    private ExerciseDAO exerciseDAO;
     private ExerciseApi exerciseApi;
     private RecyclerView exercisesRecyclerView;
     private ExercisesAdapter exercisesAdapter;
@@ -33,6 +37,7 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
         setContentView(R.layout.activity_exercises);
         setupToolbarAndDrawer();
 
+        exerciseDAO = new ExerciseDAOImpl(this);
         // set up the RecyclerView and adapter
         exercisesRecyclerView = findViewById(R.id.exercises_recycler_view);
         exercisesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -130,6 +135,22 @@ public class ExercisesActivity extends BaseActivity implements ExerciseCallback 
 
     public void onQuadricepsButtonClick() {
         exerciseApi.getExercises("quadriceps", this);
+    }
+
+    private void fetchExercises(String muscleGroup) {
+        new AsyncTask<Void, Void, List<Exercise>>() {
+            @Override
+            protected List<Exercise> doInBackground(Void... voids) {
+                // Replace with a call to your DAO
+                return exerciseDAO.getExercisesByMuscle(muscleGroup);
+            }
+
+            @Override
+            protected void onPostExecute(List<Exercise> exercises) {
+                // Update your adapter with the fetched exercises
+                exercisesAdapter.updateExercises(exercises);
+            }
+        }.execute();
     }
 
 }
