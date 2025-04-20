@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity {
 
         // Create an instance of the UserDAOImpl using the DatabaseHelper
         dbHelper = new DatabaseHelper(MainActivity.this);
+        dbHelper.seedExerciseData();
         userDAO = new UserDAOImpl(dbHelper);
 
         loginEmail = findViewById(R.id.loginEmail);

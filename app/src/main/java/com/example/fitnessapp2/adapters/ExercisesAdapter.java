@@ -39,32 +39,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Exercise exercise = exercises.get(position);
 
-        String videoFileName = ExerciseVideoUtility.getVideoFileNameForExercise(exercise.getName()); // Moved to a separate utility
-        if (videoFileName != null) {
-            int videoResId = holder.itemView.getContext().getResources()
-                    .getIdentifier(videoFileName, "raw", holder.itemView.getContext().getPackageName());
-            holder.exerciseVideo.setVideoURI(Uri.parse("android.resource://"
-                    + holder.itemView.getContext().getPackageName() + "/" + videoResId));
-
-            //set an OnCompletionListener to make the video loop
+        String mediaPath = exercise.getMediaPath();
+        if (mediaPath != null && !mediaPath.isEmpty()) {
+            holder.exerciseVideo.setVideoPath(mediaPath);
             holder.exerciseVideo.setOnCompletionListener(mp -> holder.exerciseVideo.start());
-
             holder.exerciseVideo.start();
             holder.exerciseVideo.setVisibility(View.VISIBLE);
-
-            //save the current playback position when the view is detached
-            holder.itemView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-                @Override
-                public void onViewAttachedToWindow(View v) {
-
-                }
-
-                @Override
-                public void onViewDetachedFromWindow(View v) {
-                    holder.currentPlaybackPosition = holder.exerciseVideo.getCurrentPosition();
-                    holder.exerciseVideo.pause();
-                }
-            });
         } else {
             holder.exerciseVideo.setVisibility(View.GONE);
         }

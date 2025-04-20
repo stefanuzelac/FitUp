@@ -2,11 +2,11 @@ package com.example.fitnessapp2.data.model;
 
 public class Exercise {
     private String name;
-    private String type;
     private String muscle;
     private String equipment;
     private String difficulty;
     private String instructions;
+    private String mediaPath;
 
     public Exercise(String name) {
         this.name = name;
@@ -14,13 +14,6 @@ public class Exercise {
 
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getMuscle() {
@@ -49,5 +42,12 @@ public class Exercise {
     }
     public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    public String getMediaPath() {
+        return mediaPath;
+    }
+    public void setMediaPath(String mediaPath) {
+        this.mediaPath = mediaPath;
     }
 }
